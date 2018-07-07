@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("page", "onPageSelected: "+position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
                 prevMenuItem = bottomNavigationView.getMenu().getItem(position);
-
             }
 
             @Override

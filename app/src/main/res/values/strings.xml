@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FitnessGods</string>
-    <string name="main">Exercises</string>
-    <string name="workout">Workouts</string>
+    <string name="main">Workouts</string>
+    <string name="workout">Personal Workouts</string>
     <string name="about">About Us</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -17,4 +17,21 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- FireBase reference names -->
+    <string name="user_info">user_information</string>
+
+    <!-- Registration Page -->
+    <string name="lable_register">REGISTER</string>
+    <string name="text_email">Email</string>
+    <string name="text_pass">Password</string>
+    <string name="text_confirmpass">Confirm Password</string>
+    <string name="btn_register">Register</string>
+    <string name="already_member">Already a member ? Login Here</string>
+    <!-- Login Page -->
+    <string name="text_email_login">Email</string>
+    <string name="text_pass_login">Password</string>
+    <string name="btn_login">Login</string>
+    <string name="new_member">New Member ? Signup </string>
+
 </resources>
