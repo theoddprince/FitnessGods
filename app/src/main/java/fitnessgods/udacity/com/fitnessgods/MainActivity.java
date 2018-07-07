@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import fitnessgods.udacity.com.fitnessgods.Fragments.AboutUsFragment;
@@ -31,24 +32,29 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-
+    private String loggedInby;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = getSupportActionBar();
         mFirebaseAuth =  FirebaseAuth.getInstance();
+        Intent intent = getIntent();
+        loggedInby = intent.getStringExtra("Login");
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //In case we are logged out to redirected to the Login page
-                if(firebaseAuth.getCurrentUser() == null)
-                {
-                    startActivity(new Intent(MainActivity.this , LoginActivity.class));
+        if(loggedInby.equals("Google"))
+        {
+            mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    //In case we are logged out to redirected to the Login page
+                    if(firebaseAuth.getCurrentUser() == null)
+                    {
+                        startActivity(new Intent(MainActivity.this , LoginActivity.class));
+                    }
                 }
-            }
-        };
+            };
+        }
 
         //Initializing viewPager
         viewPager = findViewById(R.id.viewpager);
@@ -101,7 +107,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                mFirebaseAuth.signOut();
+                if(loggedInby.equals("Google"))
+                    mFirebaseAuth.signOut();
+                else if (loggedInby.equals("Facebook"))
+                    LoginManager.getInstance().logOut();
+
                 finish();
                 return true;
             default:
@@ -146,12 +156,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        if(loggedInby.equals("Google"))
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        if(loggedInby.equals("Google"))
+            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 }

@@ -14,24 +14,30 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,9 +51,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPassword;
     private Button mSingin;
     private ImageButton mGoogleSignIn;
+    private ImageButton mFacebookSignIn;
+    CallbackManager callbackManager;
     private TextView signup;
     private ProgressDialog mProgressDialog;
     private GoogleSignInClient mGoogleSignInClient;
+    boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         mSingin = findViewById(R.id.btn_login);
         signup = findViewById(R.id.txt_newmember);
         mGoogleSignIn = findViewById(R.id.btn_google);
+        mFacebookSignIn = findViewById(R.id.btn_facebook);
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        if(isLoggedIn)
+            startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Facebook"));
 
         mGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,16 +85,34 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-       /* SignInButton signInButton = findViewById(R.id.google_sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_ICON_ONLY);
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Facebook"));
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        mFacebookSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                googleSignIn();
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email"));
             }
-        });*/
-
-
+        });
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -100,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     //User is signed in
-                    startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Google"));
                 }
                 else{
                     //User is signed out
@@ -135,6 +169,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //Used for facebook signIn
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        //Used for Google signIn
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
@@ -172,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             mProgressDialog.hide();
-                            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Google"));
                         }
                     }
                 });
@@ -206,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else {
                         mProgressDialog.hide();
-                        startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","FitnessGods"));
                     }
                 }
             });

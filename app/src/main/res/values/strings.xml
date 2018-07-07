@@ -39,4 +39,8 @@
     <string name="btn_login">Login</string>
     <string name="new_member">New Member ? Signup </string>
 
+    <!-- Login Page Facebook-->
+    <string name="facebook_app_id">259563184818834</string>
+    <string name="fb_login_protocol_scheme">fb259563184818834</string>
+
 </resources>
