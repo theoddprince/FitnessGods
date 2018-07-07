@@ -1,5 +1,6 @@
 package fitnessgods.udacity.com.fitnessgods;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,8 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import fitnessgods.udacity.com.fitnessgods.Fragments.AboutUsFragment;
 import fitnessgods.udacity.com.fitnessgods.Fragments.CustomListFragment;
@@ -24,12 +29,26 @@ public class MainActivity extends AppCompatActivity {
     CustomListFragment CustomListFragment;
     AboutUsFragment aboutUsFragment;
     BottomNavigationView bottomNavigationView;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = getSupportActionBar();
+        mFirebaseAuth =  FirebaseAuth.getInstance();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                //In case we are logged out to redirected to the Login page
+                if(firebaseAuth.getCurrentUser() == null)
+                {
+                    startActivity(new Intent(MainActivity.this , LoginActivity.class));
+                }
+            }
+        };
 
         //Initializing viewPager
         viewPager = findViewById(R.id.viewpager);
@@ -67,8 +86,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.setTitle("Fitness Gods");
+        //toolbar.setTitle("Fitness Gods");
         setupViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                mFirebaseAuth.signOut();
+                finish();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -100,5 +141,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(CustomListFragment);
         adapter.addFragment(aboutUsFragment);
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 }

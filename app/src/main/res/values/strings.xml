@@ -5,6 +5,11 @@
     <string name="about">About Us</string>
     <string name="title_activity_login">Sign in</string>
 
+    <string name="action_logout">Logout</string>
+
+    <string name="social_accounts">Login with social accounts</string>
+    <string name="googleIcon">Google+</string>
+    <string name="facebookIcon">Facebook</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
