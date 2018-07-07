@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fitnessgods.udacity.com.fitnessgods.R;
+import fitnessgods.udacity.com.fitnessgods.utilities.WorkoutsSyncUtils;
 
 public class WorkoutsFragment  extends Fragment {
 
@@ -29,6 +30,8 @@ public class WorkoutsFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        WorkoutsSyncUtils.initialize(getContext());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.workouts_fragment, container, false);
     }
