@@ -43,6 +43,11 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".data.WorkoutsContentProvider"
+            android:authorities="udacity.com.fitnessgods"
+            android:exported="false" />
+
         <service
             android:name=".sync.WorkoutsSyncIntentService"
             android:exported="false" />

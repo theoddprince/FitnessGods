@@ -43,4 +43,7 @@
     <string name="facebook_app_id">259563184818834</string>
     <string name="fb_login_protocol_scheme">fb259563184818834</string>
 
+    <string name="workout_name">WORKOUT</string>
+    <string name="workout_poster_desc">Workout Image</string>
+
 </resources>

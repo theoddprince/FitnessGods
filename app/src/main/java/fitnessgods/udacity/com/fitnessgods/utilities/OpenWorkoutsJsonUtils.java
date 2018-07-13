@@ -2,32 +2,30 @@ package fitnessgods.udacity.com.fitnessgods.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.util.List;
+
+import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
 
 public class OpenWorkoutsJsonUtils {
 
-    private static final String WORKOUT_NAME = "workout_name";
-    public static ContentValues[] getWorkoutsContentValuesFromJson(Context context, String workoutsJsonStr)
-            throws JSONException {
-        ContentValues[] workoutsContentValues =null;
-      /*  JSONObject workoutsJson = new JSONObject(workoutsJsonStr);
-        JSONArray jsonWorkoutsArray = workoutsJson.getJSONArray("Workouts");
+    public static ContentValues[] getWorkoutsContentValues(Context context, List<Workouts> workouts)
+    {
+        ContentValues[] workoutsContentValues =new ContentValues[workouts.size()];
 
-        ContentValues[] workoutsContentValues = new ContentValues[jsonWorkoutsArray.length()];
-
-        for (int i = 0; i < jsonWorkoutsArray.length(); i++) {
-            String workout_name = jsonWorkoutsArray.getJSONObject(i).optString(WORKOUT_NAME) ;
+        for(int i=0;i<workouts.size();i++)
+        {
+            String workout_name = workouts.get(i).getWorkout_name();
+            String poster_url = workouts.get(i).getPoster_url();
 
             ContentValues workoutsValues = new ContentValues();
             workoutsValues.put(WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_NAME,workout_name);
-
+            workoutsValues.put(WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_POSTER_URL,poster_url);
 
             workoutsContentValues[i] = workoutsValues ;
-        }*/
+        }
 
         return workoutsContentValues;
     }

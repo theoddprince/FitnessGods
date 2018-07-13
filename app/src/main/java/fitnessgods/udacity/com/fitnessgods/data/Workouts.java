@@ -5,11 +5,21 @@ import java.util.ArrayList;
 public class Workouts {
 
     private String workout_name;
+    private String poster_url;
     private ArrayList<Exercises> Exercises ;
 
-    public Workouts(String workout_name, ArrayList<Exercises> exercises) {
+    public Workouts(String workout_name,String poster_url, ArrayList<Exercises> exercises) {
         this.workout_name = workout_name;
+        this.poster_url = poster_url;
         Exercises = exercises;
+    }
+
+    public String getPoster_url() {
+        return poster_url;
+    }
+
+    public void setPoster_url(String poster_url) {
+        this.poster_url = poster_url;
     }
 
     public String getWorkout_name() {

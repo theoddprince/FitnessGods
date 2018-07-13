@@ -10,7 +10,7 @@ public class WorkoutsDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "workouts.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 1;
+    private static final int VERSION = 8;
 
     // Constructor
     WorkoutsDBHelper(Context context) {super(context, DATABASE_NAME, null, VERSION); }
@@ -20,8 +20,8 @@ public class WorkoutsDBHelper extends SQLiteOpenHelper {
 
         final String CREATE_TABLE = "CREATE TABLE "  + WorkoutsContract.WorkoutEntry.TABLE_NAME + " (" +
                 WorkoutsContract.WorkoutEntry._ID                    + " INTEGER PRIMARY KEY, " +
-                WorkoutsContract.WorkoutEntry.COLUMN_ID              + " TEXT NOT NULL, " +
-                WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_NAME    + " TEXT NOT NULL);";
+                WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_NAME    + " TEXT NOT NULL, "+
+                WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_POSTER_URL + " TEXT);";
 
         db.execSQL(CREATE_TABLE);
     }
