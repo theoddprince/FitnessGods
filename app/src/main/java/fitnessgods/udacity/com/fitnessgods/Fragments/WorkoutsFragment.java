@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,17 +23,20 @@ import fitnessgods.udacity.com.fitnessgods.ExercisesActivity;
 import fitnessgods.udacity.com.fitnessgods.R;
 import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
+import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsSyncIntentService;
 import fitnessgods.udacity.com.fitnessgods.utilities.WorkoutsSyncUtils;
 
 public class WorkoutsFragment  extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        WorkoutsAdapter.WorkoutAdapterOnClickHandler{
+        WorkoutsAdapter.WorkoutAdapterOnClickHandler,
+        SwipeRefreshLayout.OnRefreshListener{
 
     private RecyclerView mRecyclerView;
     private WorkoutsAdapter tAdapter;
     private static final int ID_WORKOUT_LOADER = 99;
     private Context mContext ;
     private ProgressBar mLoadingIndicator;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private int mPosition = RecyclerView.NO_POSITION;
 
     public static final String[] MAIN_WORKOUT_PROJECTION = {
@@ -60,6 +64,7 @@ public class WorkoutsFragment  extends Fragment implements
         View inflator =  inflater.inflate(R.layout.workouts_fragment, container, false);
         mRecyclerView =  inflator.findViewById(R.id.recyclerview_workouts);
         mLoadingIndicator = inflator.findViewById(R.id.pb_loading_indicator);
+        mSwipeRefreshLayout = inflator.findViewById(R.id.swipe_refresh_layout);
 
         LinearLayoutManager layoutManagerWorkouts =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -76,6 +81,8 @@ public class WorkoutsFragment  extends Fragment implements
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(ID_WORKOUT_LOADER, null, this);
         WorkoutsSyncUtils.initialize(mContext);
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         return inflator;
     }
@@ -119,6 +126,8 @@ public class WorkoutsFragment  extends Fragment implements
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
         if (data.getCount() != 0) showWorkoutsDataView();
+
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -132,5 +141,11 @@ public class WorkoutsFragment  extends Fragment implements
         Uri uriForWorkoutClicked = WorkoutsContract.ExercisetEntry.buildExerciseUriWithName(exerciseName);
         exerciseDetailIntent.setData(uriForWorkoutClicked);
         startActivity(exerciseDetailIntent);
+    }
+
+    @Override
+    public void onRefresh() {
+        Intent intentToSyncImmediately = new Intent(mContext, WorkoutsSyncIntentService.class);
+        mContext.startService(intentToSyncImmediately);
     }
 }
