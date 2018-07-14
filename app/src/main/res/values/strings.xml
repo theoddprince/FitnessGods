@@ -45,5 +45,5 @@
 
     <string name="workout_name">WORKOUT</string>
     <string name="workout_poster_desc">Workout Image</string>
-
+    <string name="exercise_name">Exrcice</string>
 </resources>

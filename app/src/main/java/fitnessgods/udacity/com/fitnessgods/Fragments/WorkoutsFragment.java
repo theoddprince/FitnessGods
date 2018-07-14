@@ -1,6 +1,7 @@
 package fitnessgods.udacity.com.fitnessgods.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,17 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import fitnessgods.udacity.com.fitnessgods.ExercisesActivity;
 import fitnessgods.udacity.com.fitnessgods.R;
 import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
 import fitnessgods.udacity.com.fitnessgods.utilities.WorkoutsSyncUtils;
 
 public class WorkoutsFragment  extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor>,
+        WorkoutsAdapter.WorkoutAdapterOnClickHandler{
 
     private RecyclerView mRecyclerView;
     private WorkoutsAdapter tAdapter;
-    private Uri mUri;
     private static final int ID_WORKOUT_LOADER = 99;
     private Context mContext ;
     private ProgressBar mLoadingIndicator;
@@ -64,7 +66,7 @@ public class WorkoutsFragment  extends Fragment implements
 
         mRecyclerView.setLayoutManager(layoutManagerWorkouts);
         mRecyclerView.setHasFixedSize(true);
-        tAdapter = new WorkoutsAdapter(getContext());
+        tAdapter = new WorkoutsAdapter(getContext() , this);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(tAdapter);
 
@@ -122,5 +124,13 @@ public class WorkoutsFragment  extends Fragment implements
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         tAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onClick(String exerciseName) {
+        Intent exerciseDetailIntent = new Intent(getActivity(), ExercisesActivity.class);
+        Uri uriForWorkoutClicked = WorkoutsContract.ExercisetEntry.buildExerciseUriWithName(exerciseName);
+        exerciseDetailIntent.setData(uriForWorkoutClicked);
+        startActivity(exerciseDetailIntent);
     }
 }

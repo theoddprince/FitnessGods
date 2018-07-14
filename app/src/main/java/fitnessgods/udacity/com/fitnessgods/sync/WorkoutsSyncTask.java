@@ -61,7 +61,8 @@ public class WorkoutsSyncTask {
                                     Map exercise = (HashMap) exercise_entry;
                                     Exercises newExercise = new Exercises(exercise.get("exercise_name").toString(),
                                             exercise.get("exercise_url").toString(),
-                                            exercise.get("exercise_steps").toString());
+                                            exercise.get("exercise_steps").toString(),
+                                            exercise.get("exercise_img_url").toString());
                                     exercisesList.add(newExercise);
                                 }
                                 Workouts newWorkout = new Workouts(workout_name,poster_url,exercisesList);
@@ -73,6 +74,7 @@ public class WorkoutsSyncTask {
                         }
 
                         ContentValues[] workoutsValues = OpenWorkoutsJsonUtils.getWorkoutsContentValues(context,workoutsList);
+                        ContentValues[] exercisesValues = OpenWorkoutsJsonUtils.getExercisesContentValues(context,workoutsList);
 
                         if (workoutsValues != null && workoutsValues.length != 0) {
                             ContentResolver workoutsContentResolver = context.getContentResolver();
@@ -84,6 +86,14 @@ public class WorkoutsSyncTask {
                             workoutsContentResolver.bulkInsert(
                                     WorkoutsContract.WorkoutEntry.CONTENT_URI,
                                     workoutsValues);
+
+                            workoutsContentResolver.delete(WorkoutsContract.ExercisetEntry.CONTENT_URI,
+                                    null,
+                                    null);
+
+                            workoutsContentResolver.bulkInsert(
+                                    WorkoutsContract.ExercisetEntry.CONTENT_URI,
+                                    exercisesValues);
                         }
 
                     }

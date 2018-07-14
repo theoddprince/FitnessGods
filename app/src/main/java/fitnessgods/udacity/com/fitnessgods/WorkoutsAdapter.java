@@ -21,8 +21,15 @@ public class WorkoutsAdapter  extends RecyclerView.Adapter<WorkoutsAdapter.Worko
 
     private Cursor mCursor;
     private final Context mContext;
-    public WorkoutsAdapter(@NonNull Context context) {
+    final private WorkoutAdapterOnClickHandler mClickHandler;
+
+    public interface WorkoutAdapterOnClickHandler {
+        void onClick(String exerciseName);
+    }
+
+    public WorkoutsAdapter(@NonNull Context context , WorkoutAdapterOnClickHandler clickHandler) {
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @NonNull
@@ -77,11 +84,8 @@ public class WorkoutsAdapter  extends RecyclerView.Adapter<WorkoutsAdapter.Worko
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-
-           // Intent webIntent = new Intent(Intent.ACTION_VIEW,
-           //         Uri.parse(mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_NAME))));
-
-           // mContext.startActivity(webIntent);
+            String exerciseName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.WorkoutEntry.COLUMN_WORKOUT_NAME));
+            mClickHandler.onClick(exerciseName);
         }
 
         @Override

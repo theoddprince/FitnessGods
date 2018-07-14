@@ -44,18 +44,19 @@ public class WorkoutsContract {
 
         public static final String TABLE_NAME = "exercise";
 
-        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_EXERCISE_PARENT_NAME = "exercise_parent_name";
         public static final String COLUMN_EXERCISE_NAME = "exercise_name";
         public static final String COLUMN_EXERCISE_URL = "exercise_url";
+        public static final String COLUMN_EXERCISE_IMG_URL = "exercise_img_url";
         public static final String COLUMN_EXERCISE_STEPS = "exercise_steps";
 
         public static String getSqlSelectExersices() {
             return WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_NAME;
         }
 
-        public static Uri buildMovieUriWithId(String workoutId) {
+        public static Uri buildExerciseUriWithName(String workoutName) {
             return CONTENT_URI.buildUpon()
-                    .appendPath(workoutId)
+                    .appendPath(workoutName)
                     .build();
         }
 

@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 public class WorkoutsContentProvider  extends ContentProvider {
 
     public static final int CODE_WORKOUTS = 100;
+    public static final int CODE_EXERCISES = 200;
+    public static final int CODE_SELECTED_EXERCISES = 300;
     private WorkoutsDBHelper workoutsDBHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -28,6 +30,8 @@ public class WorkoutsContentProvider  extends ContentProvider {
         final String authority = WorkoutsContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, WorkoutsContract.PATH_WORKOUTS, CODE_WORKOUTS);
+        matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES, CODE_EXERCISES);
+        matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES + "/*", CODE_SELECTED_EXERCISES);
 
         return matcher;
     }
@@ -50,6 +54,31 @@ public class WorkoutsContentProvider  extends ContentProvider {
                         null,
                         null,
                         null,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case  CODE_EXERCISES: {
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.ExercisetEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case  CODE_SELECTED_EXERCISES: {
+                String exerciseParent = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{exerciseParent};
+
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.ExercisetEntry.TABLE_NAME,
+                        null,
+                        WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_PARENT_NAME + " = ?",
+                        selectionArguments,
                         null,
                         null,
                         sortOrder);
@@ -86,6 +115,12 @@ public class WorkoutsContentProvider  extends ContentProvider {
             case CODE_WORKOUTS:
                 numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
                         WorkoutsContract.WorkoutEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            case CODE_EXERCISES:
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.ExercisetEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
@@ -131,6 +166,26 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 }
 
                 return rowsInserted;
+            case CODE_EXERCISES:
+                db.beginTransaction();
+                int rowsExerciseInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(WorkoutsContract.ExercisetEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsExerciseInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsExerciseInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsExerciseInserted;
             default:
                 return super.bulkInsert(uri, values);
         }
