@@ -1,6 +1,5 @@
 package fitnessgods.udacity.com.fitnessgods;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;

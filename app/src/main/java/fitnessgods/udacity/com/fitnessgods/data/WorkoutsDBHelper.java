@@ -10,7 +10,7 @@ public class WorkoutsDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "workouts.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 19;
+    private static final int VERSION = 23;
 
     // Constructor
     WorkoutsDBHelper(Context context) {super(context, DATABASE_NAME, null, VERSION); }
@@ -34,12 +34,31 @@ public class WorkoutsDBHelper extends SQLiteOpenHelper {
                 WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_PARENT_NAME + " TEXT NOT NULL);";
 
         db.execSQL(CREATE_TABLE_EXERCISE);
+
+        final String CREATE_TABLE_NEW_WORKOUTS = "CREATE TABLE "  + WorkoutsContract.NewWorkoutEntry.TABLE_NAME + " (" +
+                WorkoutsContract.NewWorkoutEntry._ID                    + " INTEGER PRIMARY KEY, " +
+                WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " TEXT unique);";
+
+        db.execSQL(CREATE_TABLE_NEW_WORKOUTS);
+
+        final String CREATE_TABLE_CUSTOM_EXERCISES = "CREATE TABLE "  + WorkoutsContract.CustomExercisesEntry.TABLE_NAME + " (" +
+                WorkoutsContract.CustomExercisesEntry._ID                    + " INTEGER PRIMARY KEY, " +
+                WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME    + " TEXT NOT NULL, "+
+                WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME    + " TEXT NOT NULL, "+
+                WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL    + " TEXT, "+
+                WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL    + " TEXT, "+
+                WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS    + " TEXT, "+
+                WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME + " TEXT NOT NULL);";
+
+        db.execSQL(CREATE_TABLE_CUSTOM_EXERCISES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + WorkoutsContract.WorkoutEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + WorkoutsContract.ExercisetEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WorkoutsContract.NewWorkoutEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WorkoutsContract.CustomExercisesEntry.TABLE_NAME);
         onCreate(db);
     }
 }

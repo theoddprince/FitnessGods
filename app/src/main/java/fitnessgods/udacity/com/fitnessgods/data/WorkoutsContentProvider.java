@@ -6,16 +6,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 public class WorkoutsContentProvider  extends ContentProvider {
 
     public static final int CODE_WORKOUTS = 100;
     public static final int CODE_EXERCISES = 200;
     public static final int CODE_SELECTED_EXERCISES = 300;
+    public static final int CODE_NEW_WORKOUTS = 400;
+    public static final int CODE_CUSTOM_EXERCISES = 500;
     private WorkoutsDBHelper workoutsDBHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -32,6 +38,9 @@ public class WorkoutsContentProvider  extends ContentProvider {
         matcher.addURI(authority, WorkoutsContract.PATH_WORKOUTS, CODE_WORKOUTS);
         matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES, CODE_EXERCISES);
         matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES + "/*", CODE_SELECTED_EXERCISES);
+        matcher.addURI(authority, WorkoutsContract.PATH_NEW_WORKOUTS, CODE_NEW_WORKOUTS);
+        matcher.addURI(authority, WorkoutsContract.PATH_CUSTOM_EXERCISES, CODE_CUSTOM_EXERCISES);
+
 
         return matcher;
     }
@@ -84,6 +93,28 @@ public class WorkoutsContentProvider  extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case  CODE_NEW_WORKOUTS: {
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.NewWorkoutEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case  CODE_CUSTOM_EXERCISES: {
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -121,6 +152,18 @@ public class WorkoutsContentProvider  extends ContentProvider {
             case CODE_EXERCISES:
                 numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
                         WorkoutsContract.ExercisetEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            case CODE_NEW_WORKOUTS:
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.NewWorkoutEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            case CODE_CUSTOM_EXERCISES:
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
@@ -186,6 +229,47 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 }
 
                 return rowsExerciseInserted;
+            case CODE_NEW_WORKOUTS:
+                db.beginTransaction();
+                int rowsNewWorkoutInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(WorkoutsContract.NewWorkoutEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsNewWorkoutInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                }
+                finally {
+                    db.endTransaction();
+                }
+
+                if (rowsNewWorkoutInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsNewWorkoutInserted;
+            case CODE_CUSTOM_EXERCISES:
+                db.beginTransaction();
+                int rowsCustomInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(WorkoutsContract.CustomExercisesEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsCustomInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsCustomInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsCustomInserted;
             default:
                 return super.bulkInsert(uri, values);
         }
