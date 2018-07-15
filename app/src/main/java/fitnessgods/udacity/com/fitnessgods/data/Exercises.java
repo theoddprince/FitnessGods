@@ -1,17 +1,32 @@
 package fitnessgods.udacity.com.fitnessgods.data;
 
-public class Exercises {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Exercises implements Serializable {
 
     private String exercise_name;
     private String exercise_url;
     private String exercise_step;
     private String exercise_img_url;
+    private String exercise_parent_name;
 
-    public Exercises(String exercise_name, String exercise_url, String exercise_step,String exercise_img_url) {
+    public Exercises(String exercise_name, String exercise_url, String exercise_step,String exercise_img_url, String exercise_parent_name) {
         this.exercise_name = exercise_name;
         this.exercise_url = exercise_url;
         this.exercise_step = exercise_step;
         this.exercise_img_url = exercise_img_url;
+        this.exercise_parent_name = exercise_parent_name;
+    }
+
+    public String getExercise_parent_name() {
+        return exercise_parent_name;
+    }
+
+    public void setExercise_parent_name(String exercise_parent_name) {
+        this.exercise_parent_name = exercise_parent_name;
     }
 
     public String getExercise_img_url() {
@@ -45,4 +60,5 @@ public class Exercises {
     public void setExercise_step(String exercise_step) {
         this.exercise_step = exercise_step;
     }
+
 }

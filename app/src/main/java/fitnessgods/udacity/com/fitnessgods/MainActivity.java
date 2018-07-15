@@ -98,9 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //toolbar.setTitle("Fitness Gods");
-
-
         setupViewPager(viewPager);
     }
 
@@ -152,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        WorkoutsFragment=new WorkoutsFragment(this);
+        WorkoutsFragment=new WorkoutsFragment();
         CustomListFragment=new CustomListFragment();
         aboutUsFragment=new AboutUsFragment();
         adapter.addFragment(WorkoutsFragment);

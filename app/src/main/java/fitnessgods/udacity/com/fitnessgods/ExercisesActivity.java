@@ -1,6 +1,7 @@
 package fitnessgods.udacity.com.fitnessgods;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -9,13 +10,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import fitnessgods.udacity.com.fitnessgods.data.Exercises;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
 import fitnessgods.udacity.com.fitnessgods.databinding.ActivityExercisesBinding;
 
@@ -23,6 +27,7 @@ public class ExercisesActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> ,
         ExercisesAdapter.ExercisesAdapterOnClickHandler{
 
+    private ActionBar toolbar;
     private ExercisesAdapter mAdapter;
     ActivityExercisesBinding mBinding;
     private Uri mUri;
@@ -44,6 +49,8 @@ public class ExercisesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
 
+        toolbar = getSupportActionBar();
+        toolbar.setDisplayHomeAsUpEnabled(true);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_exercises);
         mRecyclerView = mBinding.recyclerviewExercises;
         mLoadingIndicator = mBinding.pbLoadingIndicator;
@@ -60,6 +67,8 @@ public class ExercisesActivity extends AppCompatActivity implements
         mUri = getIntent().getData();
         if (mUri == null) throw new NullPointerException("URI for MovieDetailActivity cannot be null");
 
+        setTitle(mUri.getLastPathSegment());
+
         getSupportLoaderManager().initLoader(ID_EXERCISES_LOADER, null, this);
     }
 
@@ -75,6 +84,16 @@ public class ExercisesActivity extends AppCompatActivity implements
         mRecyclerView.setVisibility(View.INVISIBLE);
         /* Finally, show the loading indicator */
         mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @NonNull
@@ -110,7 +129,9 @@ public class ExercisesActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick(String exerciseParentName) {
-
+    public void onClick(Exercises exercise) {
+        Intent exerciseDetailIntent = new Intent(this, DetailedExerciseActivity.class);
+        exerciseDetailIntent.putExtra("Exercise" , exercise);
+        startActivity(exerciseDetailIntent);
     }
 }

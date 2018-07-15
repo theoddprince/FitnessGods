@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
+
+import fitnessgods.udacity.com.fitnessgods.data.Exercises;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
 import fitnessgods.udacity.com.fitnessgods.utilities.CircleTransform;
 
@@ -64,7 +66,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
     }
 
     public interface ExercisesAdapterOnClickHandler {
-        void onClick(String exerciseName);
+        void onClick(Exercises exercise);
     }
 
     class ExercisesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -86,7 +88,12 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
             String exerciseParentName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_PARENT_NAME));
-            mClickHandler.onClick(exerciseParentName);
+            String exerciseName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_NAME));
+            String exerciseVideoUrl = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_URL));
+            String exerciseSteps = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_STEPS));
+            String exerciseImgUrl = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_IMG_URL));
+            Exercises exercise = new Exercises(exerciseName,exerciseVideoUrl,exerciseSteps,exerciseImgUrl,exerciseParentName);
+            mClickHandler.onClick(exercise);
         }
 
         @Override

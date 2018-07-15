@@ -46,4 +46,9 @@
     <string name="workout_name">WORKOUT</string>
     <string name="workout_poster_desc">Workout Image</string>
     <string name="exercise_name">Exrcice</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="new_workout">Create New Workout</string>
 </resources>

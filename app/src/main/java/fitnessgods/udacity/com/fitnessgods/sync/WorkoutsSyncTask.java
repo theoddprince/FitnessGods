@@ -62,7 +62,8 @@ public class WorkoutsSyncTask {
                                     Exercises newExercise = new Exercises(exercise.get("exercise_name").toString(),
                                             exercise.get("exercise_url").toString(),
                                             exercise.get("exercise_steps").toString(),
-                                            exercise.get("exercise_img_url").toString());
+                                            exercise.get("exercise_img_url").toString(),
+                                            workout_name);
                                     exercisesList.add(newExercise);
                                 }
                                 Workouts newWorkout = new Workouts(workout_name,poster_url,exercisesList);

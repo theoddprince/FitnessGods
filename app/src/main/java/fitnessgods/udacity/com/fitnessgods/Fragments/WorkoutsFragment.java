@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,6 @@ public class WorkoutsFragment  extends Fragment implements
     private RecyclerView mRecyclerView;
     private WorkoutsAdapter tAdapter;
     private static final int ID_WORKOUT_LOADER = 99;
-    private Context mContext ;
     private ProgressBar mLoadingIndicator;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private int mPosition = RecyclerView.NO_POSITION;
@@ -47,10 +47,6 @@ public class WorkoutsFragment  extends Fragment implements
 
     public WorkoutsFragment() {
         super();
-    }
-
-    public WorkoutsFragment(Context mContext) {
-        this.mContext = mContext;
     }
 
     @Override
@@ -75,12 +71,10 @@ public class WorkoutsFragment  extends Fragment implements
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(tAdapter);
 
-       // mUri = getActivity().getIntent().getData();
-       // if (mUri == null) throw new NullPointerException("URI for WorkoutsFragment cannot be null");
         showLoading();
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(ID_WORKOUT_LOADER, null, this);
-        WorkoutsSyncUtils.initialize(mContext);
+        WorkoutsSyncUtils.initialize(getContext());
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -109,7 +103,7 @@ public class WorkoutsFragment  extends Fragment implements
                 showLoading();
                 Uri workoutQueryUri = WorkoutsContract.WorkoutEntry.CONTENT_URI;
                 String selection = WorkoutsContract.WorkoutEntry.getSqlSelectWorkouts();
-                return new CursorLoader(mContext,
+                return new CursorLoader(getContext(),
                         workoutQueryUri,
                         MAIN_WORKOUT_PROJECTION,
                         selection,
@@ -145,7 +139,8 @@ public class WorkoutsFragment  extends Fragment implements
 
     @Override
     public void onRefresh() {
-        Intent intentToSyncImmediately = new Intent(mContext, WorkoutsSyncIntentService.class);
-        mContext.startService(intentToSyncImmediately);
+        Intent intentToSyncImmediately = new Intent(getContext(), WorkoutsSyncIntentService.class);
+        getContext().startService(intentToSyncImmediately);
     }
+
 }
