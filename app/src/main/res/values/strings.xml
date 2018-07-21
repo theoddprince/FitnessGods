@@ -53,4 +53,8 @@
     <string name="new_workout">Create New Workout</string>
 
     <string name="delete">DELETE</string>
+
+    <string name="version">Version : 1.0</string>
+    <string name="developer">Developer : Amir Mattar</string>
+    <string name="mymail">amir86mattar@gmail.com</string>
 </resources>

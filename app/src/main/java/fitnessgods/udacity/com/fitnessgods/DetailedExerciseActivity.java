@@ -126,6 +126,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                     .commit();
         }
 
+        setTitle(exercise.getExersice_name());
         LoaderManager loaderManager = this.getSupportLoaderManager();
         loaderManager.initLoader(ID_CUSTOM_WORKOUT_LOADER, null, this);
     }

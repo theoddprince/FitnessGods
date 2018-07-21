@@ -11,4 +11,6 @@
     <color name="colorYellow">#e5b218</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="colorLightGrey">#a8b1b0</color>
+    <color name="colorPinkDark">#b535a4</color>
+
 </resources>

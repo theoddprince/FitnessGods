@@ -84,11 +84,18 @@ public class DetailedExerciseFragment extends Fragment implements ExoPlayer.Even
         else {
             //Displaying the Step Thumbnail only when there is no video .
             //If the url is not empty then load the image with the help of picasso library
-            noVideoImage.setImageResource(R.drawable.fitnessgym);
+            noVideoImage.setImageResource(R.drawable.fitnessdefault);
             noVideoImage.setVisibility(rootView.VISIBLE);
         }
 
-        stepDesc.setText("Amir Test");
+        String[] separated = exercise.getExercise_step().split("//");
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < separated.length ; i++)
+        {
+            sb.append(separated[i]);
+            sb.append("\n\n");
+        }
+        stepDesc.setText(sb);
         return rootView;
     }
 
@@ -290,7 +297,7 @@ public class DetailedExerciseFragment extends Fragment implements ExoPlayer.Even
             else {
                 //Displaying the Step Thumbnail only when there is no video .
                 //If the url is not empty then load the image with the help of picasso library
-                noVideoImage.setImageResource(R.drawable.fitnessgym);
+                noVideoImage.setImageResource(R.drawable.fitnessdefault);
                 noVideoImage.setVisibility(rootView.VISIBLE);
             }
 
