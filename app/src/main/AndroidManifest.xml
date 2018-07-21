@@ -53,8 +53,9 @@
             android:name=".sync.WorkoutsSyncIntentService"
             android:exported="false" />
 
-        <activity android:name=".ExercisesActivity"></activity>
-        <activity android:name=".DetailedExerciseActivity"></activity>
+        <activity android:name=".ExercisesActivity" />
+        <activity android:name=".DetailedExerciseActivity" />
+        <activity android:name=".CustomExercisesActivity"></activity>
     </application>
 
 </manifest>

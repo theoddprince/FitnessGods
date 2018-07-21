@@ -2,16 +2,13 @@ package fitnessgods.udacity.com.fitnessgods;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -25,6 +22,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
     private Cursor mCursor;
     private final Context mContext;
     final private ExercisesAdapterOnClickHandler mClickHandler;
+    private final static int FADE_DURATION = 1000; //FADE_DURATION in milliseconds
 
     public ExercisesAdapter(@NonNull Context context , ExercisesAdapterOnClickHandler clickHandler) {
         mContext = context;
@@ -52,6 +50,14 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
         if(exercise_image_url != null)
         if(!TextUtils.isEmpty(exercise_image_url))
                 Picasso.with(mContext).load(exercise_image_url).transform(new CircleTransform()).placeholder(R.mipmap.default_img).into(holder.exercise_image);
+
+        setFadeAnimation(holder.itemView);
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
     }
 
     public void swapCursor(Cursor newCursor) {
@@ -92,7 +98,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.Exer
             String exerciseVideoUrl = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_URL));
             String exerciseSteps = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_STEPS));
             String exerciseImgUrl = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_IMG_URL));
-            Exercises exercise = new Exercises(exerciseName,exerciseVideoUrl,exerciseSteps,exerciseImgUrl,exerciseParentName);
+            Exercises exercise = new Exercises(exerciseName,exerciseVideoUrl,exerciseSteps,exerciseImgUrl,exerciseParentName , null);
             mClickHandler.onClick(exercise);
         }
 

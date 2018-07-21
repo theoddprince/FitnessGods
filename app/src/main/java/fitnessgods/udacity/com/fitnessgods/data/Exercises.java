@@ -12,13 +12,23 @@ public class Exercises implements Serializable {
     private String exercise_step;
     private String exercise_img_url;
     private String exercise_parent_name;
+    private String exercise_parent_custom_name;
 
-    public Exercises(String exercise_name, String exercise_url, String exercise_step,String exercise_img_url, String exercise_parent_name) {
+    public Exercises(String exercise_name, String exercise_url, String exercise_step,String exercise_img_url, String exercise_parent_name ,String exercise_parent_custom_name ) {
         this.exercise_name = exercise_name;
         this.exercise_url = exercise_url;
         this.exercise_step = exercise_step;
         this.exercise_img_url = exercise_img_url;
         this.exercise_parent_name = exercise_parent_name;
+        this.exercise_parent_custom_name = exercise_parent_custom_name;
+    }
+
+    public String getExercise_parent_custom_name() {
+        return exercise_parent_custom_name;
+    }
+
+    public void setExercise_parent_custom_name(String exercise_parent_custom_name) {
+        this.exercise_parent_custom_name = exercise_parent_custom_name;
     }
 
     public String getExercise_parent_name() {

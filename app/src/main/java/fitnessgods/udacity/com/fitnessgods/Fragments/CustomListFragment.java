@@ -3,6 +3,7 @@ package fitnessgods.udacity.com.fitnessgods.Fragments;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import fitnessgods.udacity.com.fitnessgods.CustomExercisesActivity;
+import fitnessgods.udacity.com.fitnessgods.ExercisesActivity;
 import fitnessgods.udacity.com.fitnessgods.NewWorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.R;
 import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;
@@ -147,6 +150,9 @@ public class CustomListFragment  extends Fragment implements
 
     @Override
     public void onClick(String newWorkoutName) {
-
+        Intent exerciseDetailIntent = new Intent(getActivity(), CustomExercisesActivity.class);
+        Uri uriForWorkoutClicked = WorkoutsContract.CustomExercisesEntry.buildExerciseUriWithCustomName(newWorkoutName);
+        exerciseDetailIntent.setData(uriForWorkoutClicked);
+        startActivity(exerciseDetailIntent);
     }
 }

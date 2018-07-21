@@ -2,7 +2,6 @@ package fitnessgods.udacity.com.fitnessgods.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;

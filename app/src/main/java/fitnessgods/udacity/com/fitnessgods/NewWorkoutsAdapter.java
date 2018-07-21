@@ -3,11 +3,13 @@ package fitnessgods.udacity.com.fitnessgods;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
@@ -17,6 +19,7 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
     private Cursor mCursor;
     private final Context mContext;
     final private NewWorkoutsAdapter.NewWorkoutAdapterOnClickHandler mClickHandler;
+    private final static int FADE_DURATION = 1000; //FADE_DURATION in milliseconds
 
     public NewWorkoutsAdapter(@NonNull Context context , NewWorkoutAdapterOnClickHandler clickHandler) {
         mContext = context;
@@ -39,6 +42,14 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
         mCursor.moveToPosition(position);
         String new_workout_name = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME));
         holder.workout_name.setText(new_workout_name);
+
+        setFadeAnimation(holder.itemView);
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
     }
 
     @Override
@@ -77,11 +88,13 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
 
         @Override
         public boolean onLongClick(View v) {
-
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
             String newWorkoutName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME));
             ContentResolver newWorkoutsContentResolver = mContext.getContentResolver();
             String[] selectionArguments = new String[]{newWorkoutName};
-            newWorkoutsContentResolver.delete(WorkoutsContract.NewWorkoutEntry.CONTENT_URI,
+            Uri uriForMovieClicked = WorkoutsContract.NewWorkoutEntry.buildExerciseUriWithName(newWorkoutName);
+            newWorkoutsContentResolver.delete(uriForMovieClicked,
                     WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
                      selectionArguments);
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@drawable/background">
+    android:background="@color/colorLightGrey">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -21,13 +21,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/AppTheme">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            style="@style/AppTheme">
 
             <EditText
+                style="@style/AppTheme"
                 android:id="@+id/txt_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,8 +39,6 @@
                 android:ems="10"
                 android:hint="@string/text_email_login"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
                 app:layout_constraintBottom_toTopOf="@+id/txt_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +54,7 @@
                 android:ems="10"
                 android:hint="@string/text_pass_login"
                 android:inputType="textPassword"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
+                style="@style/AppTheme"
                 app:layout_constraintBottom_toTopOf="@+id/btn_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.503"
@@ -83,7 +83,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:text="@string/new_member"
-                android:textColor="@color/colorWhite"
+                style="@style/AppTheme"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +139,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="80dp"
                 android:text="@string/social_accounts"
-                android:textColor="@color/colorWhite"
+                style="@style/AppTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login" />
@@ -156,7 +156,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread_inside"
-                app:srcCompat="@drawable/fitnessgodswhite" />
+                app:srcCompat="@drawable/fitnessgodslogo" />
 
 
         </android.support.constraint.ConstraintLayout>

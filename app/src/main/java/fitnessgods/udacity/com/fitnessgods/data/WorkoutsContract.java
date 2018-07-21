@@ -65,6 +65,12 @@ public class WorkoutsContract {
             return WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME;
         }
 
+        public static Uri buildExerciseUriWithName(String customName) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(customName)
+                    .build();
+        }
+
     }
 
     public static final class CustomExercisesEntry implements BaseColumns {
@@ -81,10 +87,21 @@ public class WorkoutsContract {
         public static final String COLUMN_EXERCISE_STEPS = "exercise_steps";
         public static final String COLUMN_NEW_WORKOUT_NAME = "new_workout";
 
+        public static String getSqlSelectCustomExercises() {
+            return WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME;
+        }
 
-        public static Uri buildExerciseUriWithName(String newWorkoutName) {
+        public static Uri buildExerciseUriWithName(String customName , String exerciseName) {
             return CONTENT_URI.buildUpon()
-                    .appendPath(newWorkoutName)
+                    .appendPath(customName)
+                    .appendPath(exerciseName)
+                    .build();
+        }
+
+
+        public static Uri buildExerciseUriWithCustomName(String customName) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(customName)
                     .build();
         }
 

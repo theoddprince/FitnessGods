@@ -21,7 +21,10 @@ public class WorkoutsContentProvider  extends ContentProvider {
     public static final int CODE_EXERCISES = 200;
     public static final int CODE_SELECTED_EXERCISES = 300;
     public static final int CODE_NEW_WORKOUTS = 400;
+    public static final int CODE_NEW_SELECTED_WORKOUTS = 401;
     public static final int CODE_CUSTOM_EXERCISES = 500;
+    public static final int CODE_SELECTED_CUSTOM_EXERCISES = 600;
+    public static final int CODE_SELECT_ALL_CUSTOM_EXERCISES = 700;
     private WorkoutsDBHelper workoutsDBHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -39,8 +42,10 @@ public class WorkoutsContentProvider  extends ContentProvider {
         matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES, CODE_EXERCISES);
         matcher.addURI(authority, WorkoutsContract.PATH_EXERCISES + "/*", CODE_SELECTED_EXERCISES);
         matcher.addURI(authority, WorkoutsContract.PATH_NEW_WORKOUTS, CODE_NEW_WORKOUTS);
+        matcher.addURI(authority, WorkoutsContract.PATH_NEW_WORKOUTS + "/*", CODE_NEW_SELECTED_WORKOUTS);
         matcher.addURI(authority, WorkoutsContract.PATH_CUSTOM_EXERCISES, CODE_CUSTOM_EXERCISES);
-
+        matcher.addURI(authority, WorkoutsContract.PATH_CUSTOM_EXERCISES + "/*" + "/*", CODE_SELECTED_CUSTOM_EXERCISES);
+        matcher.addURI(authority, WorkoutsContract.PATH_CUSTOM_EXERCISES + "/*", CODE_SELECT_ALL_CUSTOM_EXERCISES);
 
         return matcher;
     }
@@ -115,6 +120,35 @@ public class WorkoutsContentProvider  extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case  CODE_SELECTED_CUSTOM_EXERCISES: {
+                String exerciseParent = uri.getLastPathSegment();
+                String workoutCustomName = selectionArgs[1];
+                String[] selectionArguments = new String[]{exerciseParent ,workoutCustomName };
+
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
+                        null,
+                        WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME + " = ? and "+  WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case  CODE_SELECT_ALL_CUSTOM_EXERCISES: {
+                String exerciseParent = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{exerciseParent};
+
+                cursor = workoutsDBHelper.getReadableDatabase().query(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
+                        null,
+                        WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME + " = ?" ,
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -167,6 +201,20 @@ public class WorkoutsContentProvider  extends ContentProvider {
                         selection,
                         selectionArgs);
                 break;
+            case  CODE_SELECTED_CUSTOM_EXERCISES: {
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
+                        WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME + " = ? and "+  WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME + " = ? ",
+                        selectionArgs);
+                break;
+            }
+            case  CODE_NEW_SELECTED_WORKOUTS: {
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.NewWorkoutEntry.TABLE_NAME,
+                        WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
+                        selectionArgs);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

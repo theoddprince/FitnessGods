@@ -10,6 +10,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ public class WorkoutsAdapter  extends RecyclerView.Adapter<WorkoutsAdapter.Worko
     private Cursor mCursor;
     private final Context mContext;
     final private WorkoutAdapterOnClickHandler mClickHandler;
+    private final static int FADE_DURATION = 1000; //FADE_DURATION in milliseconds
 
     public interface WorkoutAdapterOnClickHandler {
         void onClick(String exerciseName);
@@ -54,7 +58,15 @@ public class WorkoutsAdapter  extends RecyclerView.Adapter<WorkoutsAdapter.Worko
             if(!TextUtils.isEmpty(poster_url))
                 Picasso.with(mContext).load(poster_url).into(holder.workout_poster);
 
+        setFadeAnimation(holder.itemView);
     }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+
 
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
