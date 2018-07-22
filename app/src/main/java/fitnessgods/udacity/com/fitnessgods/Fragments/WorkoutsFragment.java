@@ -75,10 +75,13 @@ public class WorkoutsFragment  extends Fragment implements
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(ID_WORKOUT_LOADER, null, this);
         WorkoutsSyncUtils.initialize(getContext());
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
         return inflator;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void showWorkoutsDataView() {
@@ -136,6 +139,8 @@ public class WorkoutsFragment  extends Fragment implements
         exerciseDetailIntent.setData(uriForWorkoutClicked);
         startActivity(exerciseDetailIntent);
     }
+
+
 
     @Override
     public void onRefresh() {

@@ -238,7 +238,6 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         if (viewHolder instanceof CustomExercisesAdapter.CustomExercisesAdapterViewHolder) {
 
             final Exercises ExerciseSelected = ((CustomExercisesAdapter.CustomExercisesAdapterViewHolder) viewHolder).getExercise(position);
-            String stam  = "";
             final ContentResolver newWorkoutsContentResolver = getContentResolver();
             String[] selectionArguments = new String[]{ExerciseSelected.getExercise_parent_custom_name() , ExerciseSelected.getExersice_name()};
             Uri uriForMovieClicked = WorkoutsContract.CustomExercisesEntry.buildExerciseUriWithName(ExerciseSelected.getExercise_parent_custom_name(),ExerciseSelected.getExersice_name());

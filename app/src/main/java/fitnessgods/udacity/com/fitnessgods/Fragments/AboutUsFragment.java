@@ -18,6 +18,8 @@ public class AboutUsFragment extends Fragment {
         AboutUsFragment fragment = new AboutUsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
+
         return fragment;
     }
 
@@ -30,6 +32,12 @@ public class AboutUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.aboutus_fragment, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

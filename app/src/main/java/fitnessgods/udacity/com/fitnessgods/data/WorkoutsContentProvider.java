@@ -121,8 +121,8 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 break;
             }
             case  CODE_SELECTED_CUSTOM_EXERCISES: {
-                String exerciseParent = uri.getLastPathSegment();
-                String workoutCustomName = selectionArgs[1];
+                String workoutCustomName = selectionArgs[0];
+                String exerciseParent = selectionArgs[1];
                 String[] selectionArguments = new String[]{exerciseParent ,workoutCustomName };
 
                 cursor = workoutsDBHelper.getReadableDatabase().query(
@@ -212,6 +212,13 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
                         WorkoutsContract.NewWorkoutEntry.TABLE_NAME,
                         WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
+                        selectionArgs);
+                break;
+            }
+            case CODE_SELECT_ALL_CUSTOM_EXERCISES: {
+                numRowsDeleted = workoutsDBHelper.getWritableDatabase().delete(
+                        WorkoutsContract.CustomExercisesEntry.TABLE_NAME,
+                        WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
                         selectionArgs);
                 break;
             }

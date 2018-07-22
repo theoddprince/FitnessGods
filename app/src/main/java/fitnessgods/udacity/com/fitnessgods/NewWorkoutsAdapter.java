@@ -14,7 +14,12 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import fitnessgods.udacity.com.fitnessgods.data.Exercises;
+import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
+import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 
 public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter.NewWorkoutAdapterViewHolder>{
 
@@ -91,11 +96,13 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
         @Override
         public boolean onLongClick(View v) {
 
+
             android.support.v7.app.AlertDialog.Builder mBuilder = new android.support.v7.app.AlertDialog.Builder(mContext);
             mBuilder.setTitle("Are you sure that you want to remove this workout ? ");
             mBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+
                     int adapterPosition = getAdapterPosition();
                     mCursor.moveToPosition(adapterPosition);
                     String newWorkoutName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME));
@@ -105,6 +112,22 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
                     newWorkoutsContentResolver.delete(uriForMovieClicked,
                             WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
                             selectionArguments);
+                    uriForMovieClicked = WorkoutsContract.CustomExercisesEntry.buildExerciseUriWithCustomName(newWorkoutName);
+
+                    newWorkoutsContentResolver.delete(uriForMovieClicked,
+                            WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
+                            selectionArguments);
+
+                    String workoutName =null;
+                    if(WorkoutsWidgetProvider.workout != null)
+                        workoutName = WorkoutsWidgetProvider.workout.getWorkout_name();
+
+                    if(workoutName!= null && newWorkoutName.equals(workoutName))
+                    {
+                        ArrayList<Exercises> Exercises = new ArrayList<>() ;
+                        Workouts customWorkout = new Workouts("Select a new Custom Workout" , null ,Exercises );
+                        WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(mContext,customWorkout);
+                    }
                 }
             });
             mBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -115,6 +138,7 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
             });
 
             mBuilder.show();
+
             return true;
         }
     }

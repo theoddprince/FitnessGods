@@ -5,10 +5,13 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,6 +40,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
     ArrayList<Integer> customWorkouts;
     String[] listWorkouts;
     Activity act ;
+    private CoordinatorLayout coordinatorLayout;
     private static final int ID_CUSTOM_WORKOUT_LOADER = 101;
     boolean[] checkedWorkouts;
 
@@ -52,7 +57,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         fab = findViewById(R.id.fab_favorite);
         toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
-
+        coordinatorLayout = findViewById(R.id.coordinator_layout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,10 +68,11 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if(isChecked)
                         {
-                            if(!customWorkouts.contains(which))
-                                customWorkouts.add(which);
-                            else
-                                customWorkouts.remove(which);
+                            checkedWorkouts[which] = true;
+                        }
+                        else
+                        {
+                            checkedWorkouts[which] = false;
                         }
                     }
                 });
@@ -74,31 +80,49 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                 mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        for(int i = 0 ; i < customWorkouts.size() ; i++)
+                        StringBuilder st = new StringBuilder();
+                        for(int i = 0 ; i < listWorkouts.length ; i++)
                         {
-                            String workout = listWorkouts[customWorkouts.get(i)];
-
-                            ContentResolver newWorkoutsContentResolver = getContentResolver();
-
-                            Boolean isFound = isAddedToFavorite(newWorkoutsContentResolver , exercise.getExersice_name(),workout);
-
-                            if(!isFound)
+                            if(checkedWorkouts[i])
                             {
-                                ContentValues[] newWorkoutContentValues =new ContentValues[1];
-                                ContentValues newWorkoutValues = new ContentValues();
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL,exercise.getExercise_img_url());
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME,exercise.getExersice_name());
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME,exercise.getExercise_parent_name());
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS,exercise.getExercise_step());
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL,exercise.getExersice_url());
-                                newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME,workout);
-                                newWorkoutContentValues[0] = newWorkoutValues;
+                                String workout = listWorkouts[i];
+                                ContentResolver newWorkoutsContentResolver = getContentResolver();
+                                Boolean isFound = isAddedToFavorite(newWorkoutsContentResolver , exercise.getExersice_name(),workout);
 
-                                newWorkoutsContentResolver.bulkInsert(
-                                        WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
-                                        newWorkoutContentValues);
+                                if(!isFound)
+                                {
+                                    ContentValues[] newWorkoutContentValues =new ContentValues[1];
+                                    ContentValues newWorkoutValues = new ContentValues();
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL,exercise.getExercise_img_url());
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME,exercise.getExersice_name());
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME,exercise.getExercise_parent_name());
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS,exercise.getExercise_step());
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL,exercise.getExersice_url());
+                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME,workout);
+                                    newWorkoutContentValues[0] = newWorkoutValues;
+
+                                    newWorkoutsContentResolver.bulkInsert(
+                                            WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
+                                            newWorkoutContentValues);
+
+                                    st.append("Exercise has been added to folder "+ workout);
+                                    st.append("\n");
+                                }
+                                else
+                                {
+                                    st.append("Exercise already added to " + workout +" folder!");
+                                    st.append("\n");
+                                }
                             }
+
+                        }
+
+                        if(!TextUtils.isEmpty(st))
+                        {
+                            Snackbar snackbar = Snackbar
+                                    .make(coordinatorLayout,st, Snackbar.LENGTH_LONG);
+                            snackbar.setActionTextColor(Color.YELLOW);
+                            snackbar.show();
                         }
                     }
                 });
@@ -148,7 +172,6 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         currentState.putSerializable("Exercise" , exercise);
 
     }
-
 
     @NonNull
     @Override

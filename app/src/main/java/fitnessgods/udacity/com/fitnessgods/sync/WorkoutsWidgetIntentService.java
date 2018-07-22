@@ -39,7 +39,7 @@ public class WorkoutsWidgetIntentService extends IntentService {
 
     private void handleActionChangeWorkout()
     {
-       String Stam = "";
+
     }
 
     private void handleActionUpdateWorkoutWidgets(Workouts workoutName) {

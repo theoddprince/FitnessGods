@@ -5,18 +5,23 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +45,7 @@ public class CustomListFragment  extends Fragment implements
     private RecyclerView mRecyclerView;
     private NewWorkoutsAdapter tAdapter;
     private int mPosition = RecyclerView.NO_POSITION;
+    NestedScrollView nested;
 
     public static final String[] MAIN_NEW_WORKOUT_PROJECTION = {
             WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME
@@ -60,7 +66,7 @@ public class CustomListFragment  extends Fragment implements
         View rootView = inflater.inflate(R.layout.customlist_fragment, container, false);
         mRecyclerView = rootView.findViewById(R.id.recycler_new_workouts);
         newWorkout = rootView.findViewById(R.id.new_workout_btn);
-
+        nested = rootView.findViewById(R.id.nestedScrollView);
         LinearLayoutManager layoutManagerNewWorkouts =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -87,15 +93,26 @@ public class CustomListFragment  extends Fragment implements
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
 
-                        ContentResolver newWorkoutsContentResolver = getContext().getContentResolver();
-                        ContentValues[] newWorkoutContentValues =new ContentValues[1];
-                        ContentValues newWorkoutValues = new ContentValues();
-                        newWorkoutValues.put(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME,m_Text);
-                        newWorkoutContentValues[0] = newWorkoutValues;
+                        if(TextUtils.isEmpty(m_Text))
+                        {
+                            Snackbar snackbar = Snackbar
+                                    .make(nested,"Custom name must not be empty!", Snackbar.LENGTH_LONG);
+                            snackbar.setActionTextColor(Color.YELLOW);
+                            snackbar.show();
+                        }
+                        else
+                        {
+                            ContentResolver newWorkoutsContentResolver = getContext().getContentResolver();
+                            ContentValues[] newWorkoutContentValues =new ContentValues[1];
+                            ContentValues newWorkoutValues = new ContentValues();
+                            newWorkoutValues.put(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME,m_Text);
+                            newWorkoutContentValues[0] = newWorkoutValues;
 
-                        newWorkoutsContentResolver.bulkInsert(
-                                WorkoutsContract.NewWorkoutEntry.CONTENT_URI,
-                                newWorkoutContentValues);
+                            newWorkoutsContentResolver.bulkInsert(
+                                    WorkoutsContract.NewWorkoutEntry.CONTENT_URI,
+                                    newWorkoutContentValues);
+                        }
+
 
                     }
                 });
@@ -113,8 +130,14 @@ public class CustomListFragment  extends Fragment implements
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(ID_NEW_WORKOUT_LOADER, null, this);
 
+
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @NonNull
