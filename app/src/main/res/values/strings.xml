@@ -59,4 +59,7 @@
     <string name="mymail">amir86mattar@gmail.com</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="longClick">Long click on any item for delete</string>
+    <string name="swipefordelete">Swipe any item to delete</string>
 </resources>

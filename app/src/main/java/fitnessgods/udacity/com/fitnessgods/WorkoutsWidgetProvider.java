@@ -36,13 +36,10 @@ public class WorkoutsWidgetProvider extends AppWidgetProvider {
         // and assign it to be presented .
         if(workout == null)
         {
-           // exercise = (workout.getAllRecipies(context)).get(0);
-
+           // For now nothing to do.
         }
 
         if(workout != null) {
-
-
             Intent intent = new Intent(context, WorkoutViewService.class);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.workouts_widget_provider);
             views.setRemoteAdapter(R.id.list_view_widget, intent);

@@ -41,7 +41,7 @@
                     android:layout_height="251dp"
                     android:contentDescription="video_img"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/fitnessgym"
+                    android:src="@drawable/fitnessdefault"
                     android:visibility="invisible" />
             </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
         </LinearLayout>

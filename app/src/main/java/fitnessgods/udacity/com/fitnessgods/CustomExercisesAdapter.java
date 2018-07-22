@@ -55,7 +55,7 @@ public class CustomExercisesAdapter extends RecyclerView.Adapter<CustomExercises
                 holder.exercise_name.setText(exercise_name);
                 if(exercise_image_url != null)
                 if(!TextUtils.isEmpty(exercise_image_url))
-                Picasso.with(mContext).load(exercise_image_url).transform(new CircleTransform()).placeholder(R.mipmap.default_img).into(holder.exercise_image);
+                Picasso.with(mContext).load(exercise_image_url).transform(new CircleTransform()).placeholder(R.drawable.defaultimg).into(holder.exercise_image);
 
                 setFadeAnimation(holder.itemView);
         }

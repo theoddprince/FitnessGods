@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,13 +22,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-
 import java.util.ArrayList;
-
 import fitnessgods.udacity.com.fitnessgods.data.Exercises;
 import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
@@ -69,12 +65,6 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         mRecyclerView = findViewById(R.id.recyclerview_custom_exercises);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
-
-        /*if(savedInstanceState != null)
-        {
-            customWorkout =  (Workouts) savedInstanceState.getSerializable("Workout");
-            WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this,customWorkout);
-        }*/
 
         LinearLayoutManager layoutManagerExercises =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

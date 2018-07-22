@@ -1,7 +1,9 @@
 package fitnessgods.udacity.com.fitnessgods;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -88,16 +90,31 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
 
         @Override
         public boolean onLongClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            mCursor.moveToPosition(adapterPosition);
-            String newWorkoutName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME));
-            ContentResolver newWorkoutsContentResolver = mContext.getContentResolver();
-            String[] selectionArguments = new String[]{newWorkoutName};
-            Uri uriForMovieClicked = WorkoutsContract.NewWorkoutEntry.buildExerciseUriWithName(newWorkoutName);
-            newWorkoutsContentResolver.delete(uriForMovieClicked,
-                    WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
-                     selectionArguments);
 
+            android.support.v7.app.AlertDialog.Builder mBuilder = new android.support.v7.app.AlertDialog.Builder(mContext);
+            mBuilder.setTitle("Are you sure that you want to remove this workout ? ");
+            mBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int adapterPosition = getAdapterPosition();
+                    mCursor.moveToPosition(adapterPosition);
+                    String newWorkoutName = mCursor.getString(mCursor.getColumnIndex(WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME));
+                    ContentResolver newWorkoutsContentResolver = mContext.getContentResolver();
+                    String[] selectionArguments = new String[]{newWorkoutName};
+                    Uri uriForMovieClicked = WorkoutsContract.NewWorkoutEntry.buildExerciseUriWithName(newWorkoutName);
+                    newWorkoutsContentResolver.delete(uriForMovieClicked,
+                            WorkoutsContract.NewWorkoutEntry.COLUMN_NEW_WORKOUT_NAME + " = ?",
+                            selectionArguments);
+                }
+            });
+            mBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Don't do anything
+                }
+            });
+
+            mBuilder.show();
             return true;
         }
     }
