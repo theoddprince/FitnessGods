@@ -83,6 +83,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:text="@string/new_member"
+                android:contentDescription="@string/new_member"
                 style="@style/AppTheme"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +140,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="80dp"
                 android:text="@string/social_accounts"
+                android:contentDescription="@string/social_accounts"
                 style="@style/AppTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -156,7 +158,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread_inside"
-                app:srcCompat="@drawable/fitnessgodslogo" />
+                app:srcCompat="@drawable/fitnessgodslogo"
+                android:contentDescription="@string/fitnessGodsLogo"/>
 
 
         </android.support.constraint.ConstraintLayout>

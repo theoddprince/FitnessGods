@@ -62,4 +62,15 @@
 
     <string name="longClick">Long click on any item for delete</string>
     <string name="swipefordelete">Swipe any item to delete</string>
+
+    <string name="customWorkoutSelect">Select custom workout from your list</string>
+    <string name="customWorkoutRecycler">Custom Workouts</string>
+    <string name="fitnessGodsLogo">Fitness Gods Logo</string>
+    <string name="backgroundImage">Background Image</string>
+    <string name="Developer">Developer Name - Amir Mattar</string>
+    <string name="Version">App Version 1.0</string>
+    <string name="EmailAddress">App Email Address : amir86mattar@gmail.com</string>
+    <string name="swipeDescription">Swipe any item to delete</string>
+    <string name="favorite">Add to favorite button</string>
+
 </resources>

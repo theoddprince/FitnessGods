@@ -34,6 +34,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="@string/workout_name"
+            android:contentDescription="@string/workout_name"
             android:textColor="@color/colorWhite"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintBottom_toBottomOf="parent"
