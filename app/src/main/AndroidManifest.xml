@@ -55,7 +55,23 @@
 
         <activity android:name=".ExercisesActivity" />
         <activity android:name=".DetailedExerciseActivity" />
-        <activity android:name=".CustomExercisesActivity"></activity>
+        <activity android:name=".CustomExercisesActivity" />
+
+        <receiver android:name=".WorkoutsWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/workouts_widget_provider_info" />
+        </receiver>
+        <service android:name=".sync.WorkoutsWidgetIntentService" />
+
+        <service
+            android:name=".WorkoutViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
     </application>
 
 </manifest>

@@ -1,8 +1,9 @@
 package fitnessgods.udacity.com.fitnessgods.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Workouts {
+public class Workouts implements Serializable{
 
     private String workout_name;
     private String poster_url;

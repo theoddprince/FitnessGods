@@ -1,0 +1,92 @@
+package fitnessgods.udacity.com.fitnessgods;
+
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+import java.util.ArrayList;
+
+import fitnessgods.udacity.com.fitnessgods.data.Exercises;
+import fitnessgods.udacity.com.fitnessgods.data.Workouts;
+
+public class WorkoutViewService extends RemoteViewsService {
+
+    public WorkoutViewFactory onGetViewFactory(Intent intent)
+    {
+        return new WorkoutViewFactory(this.getApplicationContext(),intent);
+    }
+
+}
+
+class WorkoutViewFactory implements RemoteViewsService.RemoteViewsFactory{
+
+    private Context mContext;
+    private Workouts workout;
+    private ArrayList<Exercises> exercises;
+    private int mAppWidgetId;
+
+    public WorkoutViewFactory(Context mContext , Intent intent)
+    {
+        this.mContext = mContext;
+
+        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID);
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onDataSetChanged() {
+        this.workout = WorkoutsWidgetProvider.workout;
+        this.exercises = workout.getExercises();
+    }
+
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    public int getCount() {
+        if (exercises == null)
+            return 0;
+        return exercises.size();
+    }
+
+    @Override
+    public RemoteViews getViewAt(int position) {
+        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.exercise_text_view_widget_layout);
+        String st = exercises.get(position).getExersice_name();
+        views.setTextViewText(R.id.text_view_workout_widget, st);
+
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra("Exercise", exercises.get(position));
+        views.setOnClickFillInIntent(R.id.widget_layout_item, fillInIntent);
+
+        return views;
+    }
+
+    @Override
+    public RemoteViews getLoadingView() {
+        return null;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 1;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+}

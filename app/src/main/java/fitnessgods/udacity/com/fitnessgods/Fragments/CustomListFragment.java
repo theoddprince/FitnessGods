@@ -29,6 +29,7 @@ import fitnessgods.udacity.com.fitnessgods.NewWorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.R;
 import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
+import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 
 public class CustomListFragment  extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,

@@ -23,12 +23,17 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+
 import fitnessgods.udacity.com.fitnessgods.data.Exercises;
+import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
+import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 import fitnessgods.udacity.com.fitnessgods.utilities.RecyclerItemTouchHelper;
 
 public class CustomExercisesActivity extends AppCompatActivity implements
@@ -44,6 +49,7 @@ public class CustomExercisesActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private CoordinatorLayout coordinatorLayout;
     private int mPosition = RecyclerView.NO_POSITION;
+    private Workouts customWorkout;
 
     public static final String[] CUSTOM_EXERCISES_DETAIL_PROJECTION = {
             WorkoutsContract.ExercisetEntry.COLUMN_EXERCISE_NAME,
@@ -63,6 +69,12 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         mRecyclerView = findViewById(R.id.recyclerview_custom_exercises);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
+
+        /*if(savedInstanceState != null)
+        {
+            customWorkout =  (Workouts) savedInstanceState.getSerializable("Workout");
+            WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this,customWorkout);
+        }*/
 
         LinearLayoutManager layoutManagerExercises =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -151,11 +163,67 @@ public class CustomExercisesActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        ArrayList<Exercises> Exercises = new ArrayList<>() ;
+
         mAdapter.swapCursor(data);
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
         //if (data.getCount() != 0)
             showWorkoutsDataView();
+
+            if(data.getCount() != 0)
+            {
+                data.moveToPosition(-1);
+                while (data.moveToNext()) {
+
+                    String exerciseParentName = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME));
+                    String exerciseName = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME));
+                    String exerciseVideoUrl = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL));
+                    String exerciseSteps = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS));
+                    String exerciseImgUrl = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL));
+                    String exerciseParentCustomName = data.getString(data.getColumnIndex(WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME));
+                    Exercises exercise = new Exercises(exerciseName,exerciseVideoUrl,exerciseSteps,exerciseImgUrl,exerciseParentName,exerciseParentCustomName);
+
+                    Exercises.add(exercise);
+
+                }
+
+                customWorkout = new Workouts(mUri.getLastPathSegment() , null ,Exercises );
+                WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this,customWorkout);
+            }
+            else
+            {   Exercises = new ArrayList<>() ;
+                customWorkout = new Workouts(mUri.getLastPathSegment() , null ,Exercises );
+                WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this,customWorkout);
+            }
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle currentState) {
+        super.onSaveInstanceState(currentState);
+        //Must save the step data in case we rotate the screen
+        currentState.putSerializable("Workout" , customWorkout);
+
     }
 
     @Override
