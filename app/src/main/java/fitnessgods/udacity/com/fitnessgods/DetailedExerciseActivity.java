@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
     private ActionBar toolbar;
     Exercises exercise;
     Bundle bundle = new Bundle();
-    FloatingActionButton fab;
+    FloatingActionButton fabFavorite;
     private FloatingActionButton mFabShare;
     ArrayList<Integer> customWorkouts;
     String[] listWorkouts;
@@ -59,13 +60,13 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_detailed_exercise);
         customWorkouts = new ArrayList<>();
         act = this;
-        fab = findViewById(R.id.fab_favorite);
+        fabFavorite = findViewById(R.id.fab_favorite);
         mFabShare = findViewById(R.id.fab_share);
 
         toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedExerciseActivity.this);
@@ -137,6 +138,22 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
             }
         });
 
+        NestedScrollView scrollView = findViewById(R.id.nested);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY - oldScrollY > 0)
+                {
+                    fabFavorite.hide();
+                    mFabShare.hide();
+                }
+                else
+                {
+                    fabFavorite.show();
+                    mFabShare.show();
+                }
+            }
+        });
 
         mFabShare.setOnClickListener(new View.OnClickListener() {
             @Override

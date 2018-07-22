@@ -17,12 +17,11 @@
             android:layout_height="250dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/cardView_Steps"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                 android:id="@+id/playerView"
@@ -36,53 +35,28 @@
                     android:id="@+id/no_video_img"
                     android:layout_width="376dp"
                     android:layout_height="251dp"
-                    android:contentDescription="video_img"
+                    android:contentDescription="@string/no_video_default_image"
                     android:scaleType="centerCrop"
                     android:src="@drawable/fitnessdefault"
                     android:visibility="invisible" />
             </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+
         </LinearLayout>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView_Steps"
+        <TextView
+            android:id="@+id/Step_text_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:paddingBottom="3dp"
-            app:cardElevation="2dp"
-            app:contentPadding="2dp"
+            android:contentDescription="@string/text_steps"
+            android:text="@string/text_steps"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+            android:typeface="normal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/Step_text_desc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                    android:typeface="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-
-        </android.support.v7.widget.CardView>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
     </android.support.constraint.ConstraintLayout>
