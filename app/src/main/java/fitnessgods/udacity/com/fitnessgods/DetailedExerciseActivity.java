@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -21,8 +22,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,10 +36,12 @@ import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
 public class DetailedExerciseActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final String TAG = "DetailedExerciseActivity";
     private ActionBar toolbar;
     Exercises exercise;
     Bundle bundle = new Bundle();
     FloatingActionButton fab;
+    private FloatingActionButton mFabShare;
     ArrayList<Integer> customWorkouts;
     String[] listWorkouts;
     Activity act ;
@@ -55,6 +60,8 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         customWorkouts = new ArrayList<>();
         act = this;
         fab = findViewById(R.id.fab_favorite);
+        mFabShare = findViewById(R.id.fab_share);
+
         toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
@@ -127,6 +134,14 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                     }
                 });
                 mBuilder.show();
+            }
+        });
+
+
+        mFabShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShare();
             }
         });
 
@@ -229,5 +244,31 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
             return true;
         else
             return false;
+    }
+
+    private void onShare() {
+
+        String[] separated = exercise.getExercise_step().split("//");
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < separated.length ; i++)
+        {
+            sb.append(separated[i]);
+            sb.append("\n\n");
+        }
+
+        String title = exercise.getExersice_name();
+        String text = sb.toString();
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TITLE, title);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+
+        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)));
+        } else {
+            Log.e(TAG, "No Intent available to handle action");
+            Toast.makeText(this, R.string.no_app_available_to_share_content, Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -72,5 +72,6 @@
     <string name="EmailAddress">App Email Address : amir86mattar@gmail.com</string>
     <string name="swipeDescription">Swipe any item to delete</string>
     <string name="favorite">Add to favorite button</string>
-
+    <string name="share_using">Share using...</string>
+    <string name="no_app_available_to_share_content">No app available to share content !</string>
 </resources>
