@@ -5,7 +5,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("C:/fitnessgods.jks")
+            storeFile file("../fitnessgods.jks")
             storePassword "fitnessgods2018"
             keyAlias "FitnessGodsKey"
             keyPassword "fitnessgods2018"
