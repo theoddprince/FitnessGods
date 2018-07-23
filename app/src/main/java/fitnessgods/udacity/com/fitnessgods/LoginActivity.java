@@ -39,6 +39,9 @@ import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1;
@@ -47,13 +50,14 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mUserInformation;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private EditText mEmail;
-    private EditText mPassword;
-    private Button mSingin;
-    private ImageButton mGoogleSignIn;
-    private ImageButton mFacebookSignIn;
+    @BindView(R.id.txt_email) private EditText mEmail;
+    @BindView(R.id.txt_password) private EditText mPassword;
+    @BindView(R.id.btn_login) private Button mSignIn;
+    @BindView(R.id.btn_google) private ImageButton mGoogleSignIn;
+    @BindView(R.id.btn_facebook) private ImageButton mFacebookSignIn;
+    @BindView(R.id.txt_newmember) private TextView signUp;
+
     CallbackManager callbackManager;
-    private TextView signup;
     private ProgressDialog mProgressDialog;
     private GoogleSignInClient mGoogleSignInClient;
     boolean isLoggedIn;
@@ -62,15 +66,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-        mEmail = findViewById(R.id.txt_email);
-        mPassword = findViewById(R.id.txt_password);
-        mSingin = findViewById(R.id.btn_login);
-        signup = findViewById(R.id.txt_newmember);
-        mGoogleSignIn = findViewById(R.id.btn_google);
-        mFacebookSignIn = findViewById(R.id.btn_facebook);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         isLoggedIn = accessToken != null && !accessToken.isExpired();
@@ -143,14 +141,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        signup.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSignup();
             }
         });
 
-        mSingin.setOnClickListener(new View.OnClickListener() {
+        mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSignIn();
