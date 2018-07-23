@@ -38,4 +38,20 @@ public class Workouts implements Serializable{
     public void setExercises(ArrayList<Exercises> exercises) {
         Exercises = exercises;
     }
+
+    public void addExercise(Exercises exercise)
+    {
+        Exercises.add(exercise);
+    }
+
+    public void deleteExercise(Exercises exercise)
+    {
+        for(int i = 0 ;i < Exercises.size() ; i++)
+        {
+            if(exercise.getExersice_name().equals(this.Exercises.get(i).getExersice_name()))
+            {
+                Exercises.remove(i);
+            }
+        }
+    }
 }

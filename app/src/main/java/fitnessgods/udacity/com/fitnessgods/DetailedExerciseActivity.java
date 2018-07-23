@@ -32,7 +32,9 @@ import java.util.ArrayList;
 
 import fitnessgods.udacity.com.fitnessgods.Fragments.DetailedExerciseFragment;
 import fitnessgods.udacity.com.fitnessgods.data.Exercises;
+import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
+import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 
 public class DetailedExerciseActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
@@ -115,6 +117,8 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
 
                                     st.append("Exercise has been added to folder "+ workout);
                                     st.append("\n");
+
+                                    updateWidget(workout,exercise);
                                 }
                                 else
                                 {
@@ -185,6 +189,19 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         setTitle(exercise.getExersice_name());
         LoaderManager loaderManager = this.getSupportLoaderManager();
         loaderManager.initLoader(ID_CUSTOM_WORKOUT_LOADER, null, this);
+    }
+
+    private void updateWidget(String workoutName,Exercises exercise)
+    {
+        Workouts widgetWorkout = WorkoutsWidgetProvider.workout;
+        if(widgetWorkout != null)
+        {
+            if(widgetWorkout.getWorkout_name().equals(workoutName))
+            {
+                widgetWorkout.addExercise(exercise);
+                WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this , widgetWorkout);
+            }
+        }
     }
 
     @Override

@@ -246,6 +246,8 @@ public class CustomExercisesActivity extends AppCompatActivity implements
                     null,
                     selectionArguments);
 
+            updateWidget(ExerciseSelected.getExercise_parent_custom_name(),ExerciseSelected);
+
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar
                     .make(coordinatorLayout, ExerciseSelected.getExersice_name() + " removed from workouts!", Snackbar.LENGTH_LONG);
@@ -267,10 +269,38 @@ public class CustomExercisesActivity extends AppCompatActivity implements
                     newWorkoutsContentResolver.bulkInsert(
                             WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
                             newWorkoutContentValues);
+
+                    updateRestoreToWidget(ExerciseSelected.getExercise_parent_custom_name(),ExerciseSelected);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
+        }
+    }
+
+    private void updateRestoreToWidget(String workoutName, Exercises exercise)
+    {
+        Workouts widgetWorkout = WorkoutsWidgetProvider.workout;
+        if(widgetWorkout != null)
+        {
+            if(widgetWorkout.getWorkout_name().equals(workoutName))
+            {
+                widgetWorkout.addExercise(exercise);
+                WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this , widgetWorkout);
+            }
+        }
+    }
+
+    private void updateWidget(String workoutName, Exercises exerciseName)
+    {
+        Workouts widgetWorkout = WorkoutsWidgetProvider.workout;
+        if(widgetWorkout != null)
+        {
+            if(widgetWorkout.getWorkout_name().equals(workoutName))
+            {
+                widgetWorkout.deleteExercise(exerciseName);
+                WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(this , widgetWorkout);
+            }
         }
     }
 }
