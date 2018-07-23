@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Authenticating..");
+        mProgressDialog.setMessage(getResources().getString(R.string.authenticating));
 
         mUserInformation = mFirebaseDatabase.getReference().child(String.valueOf(R.string.user_info));
 
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     //User is signed in
-                    startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Google"));
+                    startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login",getResources().getString(R.string.google)));
                 }
                 else{
                     //User is signed out
@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.w(TAG, getResources().getString(R.string.signInResultfailed) + e.getStatusCode());
             updateUI(null);
         }
     }
@@ -208,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             mProgressDialog.hide();
-                            startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Google"));
+                            startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login",getResources().getString(R.string.google)));
                         }
                     }
                 });
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
         {
-            Toast.makeText(LoginActivity.this,"Fields are empty.",Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this,getResources().getString(R.string.empty),Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -238,11 +238,11 @@ public class LoginActivity extends AppCompatActivity {
                     if(!task.isSuccessful())
                     {
                         mProgressDialog.hide();
-                        Toast.makeText(LoginActivity.this,"Problem With Login.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,getResources().getString(R.string.login_problem),Toast.LENGTH_LONG).show();
                     }
                     else {
                         mProgressDialog.hide();
-                        startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","FitnessGods"));
+                        startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login",getResources().getString(R.string.app_name)));
                     }
                 }
             });

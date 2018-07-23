@@ -9,6 +9,7 @@
 
     <string name="social_accounts">Login with social accounts</string>
     <string name="googleIcon">Google+</string>
+    <string name="google">Google</string>
     <string name="facebookIcon">Facebook</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -76,4 +77,12 @@
     <string name="no_app_available_to_share_content">No app available to share content !</string>
     <string name="no_video_default_image">Default Image</string>
     <string name="text_steps">Steps</string>
+
+    <string name="empty">Fields are empty.</string>
+    <string name="login_problem">Problem With Login.</string>
+    <string name="authenticating">Authenticating..</string>
+    <string name="signInResultfailed">signInResult:failed code=</string>
+    <string name="registering">Registering , Please Wait ...</string>
+    <string name="RegistrationSuccessful">Registration Successful.</string>
+    <string name="incorrectInputs">One of your inputs is incorrect.</string>
 </resources>

@@ -69,13 +69,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)  || TextUtils.isEmpty(confirmpass) )
         {
-            Toast.makeText(RegistrationActivity.this, "Fields are empty.",Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, getResources().getString(R.string.empty),Toast.LENGTH_LONG).show();
         }
         else
         {
             if(pass.equals(confirmpass))
             {
-                mProgressDialog.setMessage("Registering , Please Wait ...");
+                mProgressDialog.setMessage(getResources().getString(R.string.registering));
                 mProgressDialog.show();
                 //Password is Correct
                 mFirebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             //Creation Successful
                             mProgressDialog.hide();
-                            Toast.makeText(RegistrationActivity.this, "Registration Successful.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistrationActivity.this,  getResources().getString(R.string.RegistrationSuccessful),Toast.LENGTH_LONG).show();
                             startActivity(new Intent(RegistrationActivity.this , MainActivity.class));
                         }
                         else{
@@ -99,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
             else
             {
                 //Password is not Correct
-                Toast.makeText(RegistrationActivity.this, "One of your inputs is incorrect.",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this, getResources().getString(R.string.incorrectInputs),Toast.LENGTH_LONG).show();
             }
         }
 
