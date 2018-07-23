@@ -10,7 +10,7 @@ public class WorkoutsDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "workouts.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 27;
+    private static final int VERSION = 28;
 
     // Constructor
     WorkoutsDBHelper(Context context) {super(context, DATABASE_NAME, null, VERSION); }

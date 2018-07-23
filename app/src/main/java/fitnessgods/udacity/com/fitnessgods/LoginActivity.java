@@ -50,12 +50,12 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mUserInformation;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    @BindView(R.id.txt_email) private EditText mEmail;
-    @BindView(R.id.txt_password) private EditText mPassword;
-    @BindView(R.id.btn_login) private Button mSignIn;
-    @BindView(R.id.btn_google) private ImageButton mGoogleSignIn;
-    @BindView(R.id.btn_facebook) private ImageButton mFacebookSignIn;
-    @BindView(R.id.txt_newmember) private TextView signUp;
+    @BindView(R.id.txt_email) EditText mEmail;
+    @BindView(R.id.txt_password) EditText mPassword;
+    @BindView(R.id.btn_login) Button mSignIn;
+    @BindView(R.id.btn_google) ImageButton mGoogleSignIn;
+    @BindView(R.id.btn_facebook) ImageButton mFacebookSignIn;
+    @BindView(R.id.txt_newmember) TextView signUp;
 
     CallbackManager callbackManager;
     private ProgressDialog mProgressDialog;
