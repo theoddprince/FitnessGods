@@ -3,39 +3,22 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="imageWizard">
+        <entry key="vectorWizard">
           <value>
             <PersistentState>
               <option name="children">
                 <map>
-                  <entry key="imageAssetPanel">
+                  <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="actionbar">
+                            <entry key="clipartAsset">
                               <value>
                                 <PersistentState>
-                                  <option name="children">
-                                    <map>
-                                      <entry key="image">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="paddingPercent" value="-5" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                    </map>
-                                  </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\amir8\Desktop\Google Final Project\info.png" />
-                                      <entry key="outputName" value="ic_info" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -45,7 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="outputName" value="ic_share_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\amir8" />
                           </map>
                         </option>
                       </PersistentState>
