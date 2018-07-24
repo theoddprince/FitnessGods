@@ -40,7 +40,6 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String TAG = "DetailedExerciseActivity";
-    private ActionBar toolbar;
     Exercises exercise;
     Bundle bundle = new Bundle();
     FloatingActionButton fabFavorite;
@@ -65,7 +64,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         fabFavorite = findViewById(R.id.fab_favorite);
         mFabShare = findViewById(R.id.fab_share);
 
-        toolbar = getSupportActionBar();
+        ActionBar toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
         fabFavorite.setOnClickListener(new View.OnClickListener() {

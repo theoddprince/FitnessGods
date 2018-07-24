@@ -27,7 +27,6 @@ import fitnessgods.udacity.com.fitnessgods.Fragments.WorkoutsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActionBar toolbar;
     //This is our viewPager
     private ViewPager viewPager;
     MenuItem prevMenuItem;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = getSupportActionBar();
         mFirebaseAuth =  FirebaseAuth.getInstance();
         currentUser = mFirebaseAuth.getCurrentUser();
 

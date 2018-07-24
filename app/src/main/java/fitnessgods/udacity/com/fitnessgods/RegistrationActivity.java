@@ -19,11 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private Button mRegister_btn;
     private EditText mEmail_text;
     private EditText mPassword_text;
     private EditText mConfirmPass_text;
-    private TextView mAlreadyMember_text;
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mFirebaseAuth;
 
@@ -32,10 +30,10 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mRegister_btn = findViewById(R.id.btn_register);
+        Button mRegister_btn = findViewById(R.id.btn_register);
         mEmail_text = findViewById(R.id.txt_email);
         mPassword_text = findViewById(R.id.txt_pass);
-        mAlreadyMember_text = findViewById(R.id.txt_alreadymember);
+        TextView mAlreadyMember_text = findViewById(R.id.txt_alreadymember);
         mConfirmPass_text = findViewById(R.id.txt_confirmpass);
         mProgressDialog = new ProgressDialog(this);
         mFirebaseAuth = FirebaseAuth.getInstance();

@@ -37,7 +37,6 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         CustomExercisesAdapter.CustomExercisesAdapterOnClickHandler,
         RecyclerItemTouchHelper.RecyclerItemTouchHelperListener{
 
-    private ActionBar toolbar;
     private CustomExercisesAdapter mAdapter;
     private Uri mUri;
     private static final int ID_EXERCISES_LOADER = 555;
@@ -60,7 +59,7 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_exercises);
 
-        toolbar = getSupportActionBar();
+        ActionBar toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         mRecyclerView = findViewById(R.id.recyclerview_custom_exercises);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);

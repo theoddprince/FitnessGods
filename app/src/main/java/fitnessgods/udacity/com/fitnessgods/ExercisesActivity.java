@@ -26,7 +26,6 @@ public class ExercisesActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> ,
         ExercisesAdapter.ExercisesAdapterOnClickHandler{
 
-    private ActionBar toolbar;
     private ExercisesAdapter mAdapter;
     ActivityExercisesBinding mBinding;
     private Uri mUri;
@@ -48,7 +47,7 @@ public class ExercisesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
 
-        toolbar = getSupportActionBar();
+        ActionBar toolbar = getSupportActionBar();
         toolbar.setDisplayHomeAsUpEnabled(true);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_exercises);
         mRecyclerView = mBinding.recyclerviewExercises;

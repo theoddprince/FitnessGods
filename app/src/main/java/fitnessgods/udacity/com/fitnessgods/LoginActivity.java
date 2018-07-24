@@ -53,8 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "FireBaseLog" ;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mUserInformation;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     @BindView(R.id.txt_email) EditText mEmail;
@@ -74,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         printHashKeyForFacebook();
@@ -123,8 +121,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getResources().getString(R.string.authenticating));
-
-        mUserInformation = mFirebaseDatabase.getReference().child(String.valueOf(R.string.user_info));
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override

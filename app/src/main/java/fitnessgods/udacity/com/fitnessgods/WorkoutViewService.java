@@ -14,7 +14,7 @@ public class WorkoutViewService extends RemoteViewsService {
 
     public WorkoutViewFactory onGetViewFactory(Intent intent)
     {
-        return new WorkoutViewFactory(this.getApplicationContext(),intent);
+        return new WorkoutViewFactory(this.getApplicationContext());
     }
 
 }
@@ -22,16 +22,12 @@ public class WorkoutViewService extends RemoteViewsService {
 class WorkoutViewFactory implements RemoteViewsService.RemoteViewsFactory{
 
     private Context mContext;
-    private Workouts workout;
     private ArrayList<Exercises> exercises;
-    private int mAppWidgetId;
 
-    public WorkoutViewFactory(Context mContext , Intent intent)
+    public WorkoutViewFactory(Context mContext)
     {
         this.mContext = mContext;
 
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     @Override
@@ -41,7 +37,7 @@ class WorkoutViewFactory implements RemoteViewsService.RemoteViewsFactory{
 
     @Override
     public void onDataSetChanged() {
-        this.workout = WorkoutsWidgetProvider.workout;
+        Workouts workout = WorkoutsWidgetProvider.workout;
         this.exercises = workout.getExercises();
     }
 
