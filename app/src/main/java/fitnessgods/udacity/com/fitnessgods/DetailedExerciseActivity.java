@@ -71,74 +71,93 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedExerciseActivity.this);
-                mBuilder.setTitle(getResources().getString(R.string.selectCustomWorkout));
-                mBuilder.setMultiChoiceItems(listWorkouts, checkedWorkouts, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if(isChecked)
-                        {
-                            checkedWorkouts[which] = true;
-                        }
-                        else
-                        {
-                            checkedWorkouts[which] = false;
-                        }
-                    }
-                });
-                mBuilder.setCancelable(true);
-                mBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StringBuilder st = new StringBuilder();
-                        for(int i = 0 ; i < listWorkouts.length ; i++)
-                        {
-                            if(checkedWorkouts[i])
+
+                if(listWorkouts != null)
+                {
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedExerciseActivity.this);
+                    mBuilder.setTitle(getResources().getString(R.string.selectCustomWorkout));
+                    mBuilder.setMultiChoiceItems(listWorkouts, checkedWorkouts, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                            if(isChecked)
                             {
-                                String workout = listWorkouts[i];
-                                ContentResolver newWorkoutsContentResolver = getContentResolver();
-                                Boolean isFound = isAddedToFavorite(newWorkoutsContentResolver , exercise.getExersice_name(),workout);
+                                checkedWorkouts[which] = true;
+                            }
+                            else
+                            {
+                                checkedWorkouts[which] = false;
+                            }
+                        }
+                    });
+                    mBuilder.setCancelable(true);
+                    mBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            StringBuilder st = new StringBuilder();
 
-                                if(!isFound)
+                            for(int i = 0 ; i < listWorkouts.length ; i++)
+                            {
+                                if(checkedWorkouts[i])
                                 {
-                                    ContentValues[] newWorkoutContentValues =new ContentValues[1];
-                                    ContentValues newWorkoutValues = new ContentValues();
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL,exercise.getExercise_img_url());
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME,exercise.getExersice_name());
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME,exercise.getExercise_parent_name());
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS,exercise.getExercise_step());
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL,exercise.getExersice_url());
-                                    newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME,workout);
-                                    newWorkoutContentValues[0] = newWorkoutValues;
+                                    String workout = listWorkouts[i];
+                                    ContentResolver newWorkoutsContentResolver = getContentResolver();
+                                    Boolean isFound = isAddedToFavorite(newWorkoutsContentResolver , exercise.getExersice_name(),workout);
 
-                                    newWorkoutsContentResolver.bulkInsert(
-                                            WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
-                                            newWorkoutContentValues);
+                                    if(!isFound)
+                                    {
+                                        ContentValues[] newWorkoutContentValues =new ContentValues[1];
+                                        ContentValues newWorkoutValues = new ContentValues();
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_IMG_URL,exercise.getExercise_img_url());
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_NAME,exercise.getExersice_name());
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_PARENT_NAME,exercise.getExercise_parent_name());
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_STEPS,exercise.getExercise_step());
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_EXERCISE_URL,exercise.getExersice_url());
+                                        newWorkoutValues.put(WorkoutsContract.CustomExercisesEntry.COLUMN_NEW_WORKOUT_NAME,workout);
+                                        newWorkoutContentValues[0] = newWorkoutValues;
 
-                                    st.append(getResources().getString(R.string.exerciseAdded)+ workout);
-                                    st.append("\n");
+                                        newWorkoutsContentResolver.bulkInsert(
+                                                WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
+                                                newWorkoutContentValues);
 
-                                    updateWidget(workout,exercise);
+                                        st.append(getResources().getString(R.string.exerciseAdded)+ workout);
+                                        st.append("\n");
+
+                                        updateWidget(workout,exercise);
+                                    }
+                                    else
+                                    {
+                                        st.append(getResources().getString(R.string.exerciseAlreadyAdded) + workout +getResources().getString(R.string.folder));
+                                        st.append("\n");
+                                    }
                                 }
-                                else
-                                {
-                                    st.append(getResources().getString(R.string.exerciseAlreadyAdded) + workout +getResources().getString(R.string.folder));
-                                    st.append("\n");
-                                }
+
                             }
 
+                            if(!TextUtils.isEmpty(st))
+                            {
+                                Snackbar snackbar = Snackbar
+                                        .make(coordinatorLayout,st, Snackbar.LENGTH_LONG);
+                                snackbar.setActionTextColor(Color.YELLOW);
+                                snackbar.show();
+                            }
                         }
-
-                        if(!TextUtils.isEmpty(st))
-                        {
-                            Snackbar snackbar = Snackbar
-                                    .make(coordinatorLayout,st, Snackbar.LENGTH_LONG);
-                            snackbar.setActionTextColor(Color.YELLOW);
-                            snackbar.show();
-                        }
+                    });
+                    mBuilder.show();
+                }
+                else
+                {
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedExerciseActivity.this);
+                    mBuilder.setTitle("");
+                    mBuilder.setMessage(getResources().getString(R.string.pleaseAddCustom));
+                    mBuilder.setCancelable(false);
+                    mBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Whatever...
                     }
-                });
-                mBuilder.show();
+                }).show();
+                }
+
             }
         });
 

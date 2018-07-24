@@ -107,5 +107,6 @@
     <string name="noAvailableIntent">No Intent available to handle action</string>
     <string name="areYouSureToRemoveWorkout">Are you sure that you want to remove this workout ?</string>
     <string name="selectWorkout">Select a new Custom Workout</string>
+    <string name="pleaseAddCustom">Please add a custom workout to mark a favorite</string>
 
 </resources>
