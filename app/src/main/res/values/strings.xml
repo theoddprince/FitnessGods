@@ -85,4 +85,6 @@
     <string name="registering">Registering , Please Wait ...</string>
     <string name="RegistrationSuccessful">Registration Successful.</string>
     <string name="incorrectInputs">One of your inputs is incorrect.</string>
+
+    <string name="local">Local</string>
 </resources>

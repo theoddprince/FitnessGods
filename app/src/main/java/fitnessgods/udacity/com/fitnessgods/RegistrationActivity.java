@@ -85,7 +85,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             //Creation Successful
                             mProgressDialog.hide();
                             Toast.makeText(RegistrationActivity.this,  getResources().getString(R.string.RegistrationSuccessful),Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(RegistrationActivity.this , MainActivity.class));
+                            startActivity(new Intent(RegistrationActivity.this , MainActivity.class).putExtra("Login",getResources().getString(R.string.google)));
                         }
                         else{
                             //Creating Failed

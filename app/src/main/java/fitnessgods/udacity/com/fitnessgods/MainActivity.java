@@ -13,16 +13,33 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import fitnessgods.udacity.com.fitnessgods.Fragments.AboutUsFragment;
 import fitnessgods.udacity.com.fitnessgods.Fragments.CustomListFragment;
 import fitnessgods.udacity.com.fitnessgods.Fragments.WorkoutsFragment;
+import fitnessgods.udacity.com.fitnessgods.data.Exercises;
 import fitnessgods.udacity.com.fitnessgods.utilities.WorkoutsSyncUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
     AboutUsFragment aboutUsFragment;
     BottomNavigationView bottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private String loggedInby;
+    boolean isLoggedInGoogle , isLoggedInFacebook , isLoggedInLocal;
+    CallbackManager callbackManager;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,60 +64,92 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = getSupportActionBar();
         mFirebaseAuth =  FirebaseAuth.getInstance();
-        Intent intent = getIntent();
-        loggedInby = intent.getStringExtra("Login");
+        currentUser = mFirebaseAuth.getCurrentUser();
 
-        if(loggedInby.equals("Google"))
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        isLoggedInFacebook = accessToken != null && !accessToken.isExpired();
+
+        if(currentUser != null)
         {
-            mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    //In case we are logged out to redirected to the Login page
-                    if(firebaseAuth.getCurrentUser() == null)
-                    {
-                        startActivity(new Intent(MainActivity.this , LoginActivity.class));
-                    }
-                }
-            };
+            isLoggedInGoogle = true;
+            loggedInby = "Google";
         }
 
-        //Initializing viewPager
-        viewPager = findViewById(R.id.viewpager);
+        if(isLoggedInFacebook)
+            loggedInby ="Facebook";
 
-        //Initializing the bottomNavigationView
-        bottomNavigationView = findViewById(R.id.navigation);
+        if(savedInstanceState != null)
+        {
+            loggedInby =  savedInstanceState.getString("Login");
+        }
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        // attaching bottom sheet behaviour - hide / show on scroll
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-                if (prevMenuItem != null) {
-                    prevMenuItem.setChecked(false);
-                }
-                else
-                {
-                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
-                }
-                Log.d("page", "onPageSelected: "+position);
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+            public void onSuccess(LoginResult loginResult) {
+                loggedInby = "Facebook";
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
 
             }
         });
 
-        setupViewPager(viewPager);
+        if(!isLoggedInGoogle && !isLoggedInFacebook)
+        {
+              startActivity(new Intent(MainActivity.this , LoginActivity.class));
+        }
+        else
+        {
+             //Initializing viewPager
+            viewPager = findViewById(R.id.viewpager);
+
+            //Initializing the bottomNavigationView
+            bottomNavigationView = findViewById(R.id.navigation);
+
+            bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            // attaching bottom sheet behaviour - hide / show on scroll
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+            layoutParams.setBehavior(new BottomNavigationBehavior());
+
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+                @Override
+                public void onPageSelected(int position) {
+                    if (prevMenuItem != null) {
+                        prevMenuItem.setChecked(false);
+                    }
+                    else
+                    {
+                        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                    }
+                    Log.d("page", "onPageSelected: "+position);
+                    bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                    prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            setupViewPager(viewPager);
+        }
+
     }
 
     @Override
@@ -112,11 +163,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                if(loggedInby.equals("Google"))
+                if(currentUser != null)
                     mFirebaseAuth.signOut();
                 else if (loggedInby.equals("Facebook"))
                     LoginManager.getInstance().logOut();
 
+                startActivity(new Intent(MainActivity.this , LoginActivity.class));
                 finish();
                 return true;
             default:
@@ -159,16 +211,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if(loggedInby.equals("Google"))
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    public void onSaveInstanceState(Bundle currentState) {
+        super.onSaveInstanceState(currentState);
+        //Must save the step data in case we rotate the screen
+        currentState.putString("Login" , loggedInby);
+
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(loggedInby.equals("Google"))
-            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory(Intent.CATEGORY_HOME);
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(homeIntent);
+           // finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
+
 }

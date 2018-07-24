@@ -2,10 +2,14 @@ package fitnessgods.udacity.com.fitnessgods;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import butterknife.BindView;
@@ -60,8 +66,8 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     private ProgressDialog mProgressDialog;
     private GoogleSignInClient mGoogleSignInClient;
-    boolean isLoggedIn;
-
+    AuthCredential credential;
+    FirebaseUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +76,11 @@ public class LoginActivity extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        isLoggedIn = accessToken != null && !accessToken.isExpired();
+        printHashKeyForFacebook();
 
-        if(isLoggedIn)
-            startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("Login","Facebook"));
+        currentUser = mFirebaseAuth.getCurrentUser();
+        if(currentUser != null)
+            finish();
 
         mGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+        credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -260,4 +266,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
+
+    private void printHashKeyForFacebook()
+    {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("fitnessgods.udacity.com.fitnessgods" , PackageManager.GET_SIGNATURES);
+            for(Signature signature:info.signatures)
+            {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash" , Base64.encodeToString(md.digest(),Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
