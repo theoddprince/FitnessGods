@@ -102,7 +102,7 @@ public class CustomExercisesActivity extends AppCompatActivity implements
         new ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(mRecyclerView);
 
         mUri = getIntent().getData();
-        if (mUri == null) throw new NullPointerException("URI for MovieDetailActivity cannot be null");
+        if (mUri == null) throw new NullPointerException(getResources().getString(R.string.uriCannotBeNull));
 
         setTitle(mUri.getLastPathSegment());
 
@@ -147,7 +147,7 @@ public class CustomExercisesActivity extends AppCompatActivity implements
                         null,
                         null);
             default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+                throw new RuntimeException(getResources().getString(R.string.loaderNotImplemented) + loaderId);
         }
     }
 
@@ -250,8 +250,8 @@ public class CustomExercisesActivity extends AppCompatActivity implements
 
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, ExerciseSelected.getExersice_name() + " removed from workouts!", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", new View.OnClickListener() {
+                    .make(coordinatorLayout, ExerciseSelected.getExersice_name() + getResources().getString(R.string.removeFromWorkouts), Snackbar.LENGTH_LONG);
+            snackbar.setAction(getResources().getString(R.string.undo), new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

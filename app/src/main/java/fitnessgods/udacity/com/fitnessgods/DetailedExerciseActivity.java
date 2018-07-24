@@ -72,7 +72,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedExerciseActivity.this);
-                mBuilder.setTitle("Select Custom Workout");
+                mBuilder.setTitle(getResources().getString(R.string.selectCustomWorkout));
                 mBuilder.setMultiChoiceItems(listWorkouts, checkedWorkouts, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -87,7 +87,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                     }
                 });
                 mBuilder.setCancelable(true);
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                mBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         StringBuilder st = new StringBuilder();
@@ -115,14 +115,14 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                                             WorkoutsContract.CustomExercisesEntry.CONTENT_URI,
                                             newWorkoutContentValues);
 
-                                    st.append("Exercise has been added to folder "+ workout);
+                                    st.append(getResources().getString(R.string.exerciseAdded)+ workout);
                                     st.append("\n");
 
                                     updateWidget(workout,exercise);
                                 }
                                 else
                                 {
-                                    st.append("Exercise already added to " + workout +" folder!");
+                                    st.append(getResources().getString(R.string.exerciseAlreadyAdded) + workout +getResources().getString(R.string.folder));
                                     st.append("\n");
                                 }
                             }
@@ -236,7 +236,7 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
                         null,
                         null);
             default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+                throw new RuntimeException(getResources().getString(R.string.loaderNotImplemented) + loaderId);
         }
     }
 
@@ -301,8 +301,8 @@ public class DetailedExerciseActivity extends AppCompatActivity implements
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)));
         } else {
-            Log.e(TAG, "No Intent available to handle action");
-            Toast.makeText(this, R.string.no_app_available_to_share_content, Toast.LENGTH_LONG).show();
+            Log.e(TAG, getResources().getString(R.string.noAvailableIntent));
+            Toast.makeText(this, getResources().getString(R.string.no_app_available_to_share_content), Toast.LENGTH_LONG).show();
         }
     }
 }

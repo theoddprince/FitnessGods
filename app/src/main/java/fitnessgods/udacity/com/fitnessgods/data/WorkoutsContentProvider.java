@@ -15,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import fitnessgods.udacity.com.fitnessgods.R;
+
 public class WorkoutsContentProvider  extends ContentProvider {
 
     public static final int CODE_WORKOUTS = 100;
@@ -150,7 +152,7 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException(getContext().getResources().getString(R.string.unknownUri) + uri);
         }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -223,7 +225,7 @@ public class WorkoutsContentProvider  extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException(getContext().getResources().getString(R.string.unknownUri) + uri);
         }
 
         if (numRowsDeleted != 0) {

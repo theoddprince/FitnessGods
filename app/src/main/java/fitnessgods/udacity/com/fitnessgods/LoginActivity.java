@@ -270,7 +270,7 @@ public class LoginActivity extends AppCompatActivity {
     private void printHashKeyForFacebook()
     {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo("fitnessgods.udacity.com.fitnessgods" , PackageManager.GET_SIGNATURES);
+            PackageInfo info = getPackageManager().getPackageInfo(getResources().getString(R.string.packageName) , PackageManager.GET_SIGNATURES);
             for(Signature signature:info.signatures)
             {
                 MessageDigest md = MessageDigest.getInstance("SHA");

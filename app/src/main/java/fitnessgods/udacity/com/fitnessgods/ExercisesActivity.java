@@ -64,7 +64,7 @@ public class ExercisesActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(mAdapter);
 
         mUri = getIntent().getData();
-        if (mUri == null) throw new NullPointerException("URI for MovieDetailActivity cannot be null");
+        if (mUri == null) throw new NullPointerException(getResources().getString(R.string.uriCannotBeNull));
 
         setTitle(mUri.getLastPathSegment());
 
@@ -109,7 +109,7 @@ public class ExercisesActivity extends AppCompatActivity implements
                         null,
                         null);
             default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+                throw new RuntimeException(getResources().getString(R.string.loaderNotImplemented) + loaderId);
         }
     }
 

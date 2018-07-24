@@ -2,6 +2,7 @@ package fitnessgods.udacity.com.fitnessgods.Fragments;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -81,14 +82,14 @@ public class CustomListFragment  extends Fragment implements
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Workout Custom Name ");
+                builder.setTitle(getResources().getString(R.string.customName));
                 final EditText input = new EditText(getContext());
 
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
                 // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         m_Text = input.getText().toString();
@@ -96,7 +97,7 @@ public class CustomListFragment  extends Fragment implements
                         if(TextUtils.isEmpty(m_Text))
                         {
                             Snackbar snackbar = Snackbar
-                                    .make(nested,"Custom name must not be empty!", Snackbar.LENGTH_LONG);
+                                    .make(nested,getResources().getString(R.string.customNameNotEmpty), Snackbar.LENGTH_LONG);
                             snackbar.setActionTextColor(Color.YELLOW);
                             snackbar.show();
                         }
@@ -116,7 +117,7 @@ public class CustomListFragment  extends Fragment implements
 
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -129,7 +130,6 @@ public class CustomListFragment  extends Fragment implements
 
         LoaderManager loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(ID_NEW_WORKOUT_LOADER, null, this);
-
 
         // Inflate the layout for this fragment
         return rootView;
@@ -155,7 +155,7 @@ public class CustomListFragment  extends Fragment implements
                         null,
                         null);
             default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+                throw new RuntimeException(getResources().getString(R.string.loaderNotImplemented) + loaderId);
         }
     }
 

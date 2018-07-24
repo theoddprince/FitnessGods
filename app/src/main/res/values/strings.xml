@@ -1,4 +1,6 @@
 <resources>
+
+    <string name="packageName">fitnessgods.udacity.com.fitnessgods</string>
     <string name="app_name">FitnessGods</string>
     <string name="main">Workouts</string>
     <string name="workout">Personal Workouts</string>
@@ -87,4 +89,23 @@
     <string name="incorrectInputs">One of your inputs is incorrect.</string>
 
     <string name="exercise">Exercise</string>
+    <string name="customName">Workout Custom Name</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="customNameNotEmpty">Custom name must not be empty!</string>
+    <string name="loaderNotImplemented">Loader Not Implemented: </string>
+    <string name="unknownUri">Unknown uri: </string>
+    <string name="removeFromWorkouts"> removed from workouts!</string>
+    <string name="undo">Undo</string>
+    <string name="uriCannotBeNull">URI cannot be null</string>
+    <string name="exerciseAdded">Exercise has been added to folder </string>
+    <string name="exerciseAlreadyAdded">Exercise already added to  </string>
+    <string name="folder"> folder</string>
+    <string name="selectCustomWorkout">Select Custom Workout</string>
+    <string name="noAvailableIntent">No Intent available to handle action</string>
+    <string name="areYouSureToRemoveWorkout">Are you sure that you want to remove this workout ?</string>
+    <string name="selectWorkout">Select a new Custom Workout</string>
+
 </resources>

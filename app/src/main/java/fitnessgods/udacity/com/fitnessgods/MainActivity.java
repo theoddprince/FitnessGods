@@ -1,24 +1,16 @@
 package fitnessgods.udacity.com.fitnessgods;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,20 +19,11 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-
 import fitnessgods.udacity.com.fitnessgods.Fragments.AboutUsFragment;
 import fitnessgods.udacity.com.fitnessgods.Fragments.CustomListFragment;
 import fitnessgods.udacity.com.fitnessgods.Fragments.WorkoutsFragment;
-import fitnessgods.udacity.com.fitnessgods.data.Exercises;
-import fitnessgods.udacity.com.fitnessgods.utilities.WorkoutsSyncUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
     private String loggedInby;
-    boolean isLoggedInGoogle , isLoggedInFacebook , isLoggedInLocal;
+    boolean isLoggedInGoogle , isLoggedInFacebook;
     CallbackManager callbackManager;
     FirebaseUser currentUser;
 
@@ -136,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                     {
                         bottomNavigationView.getMenu().getItem(0).setChecked(false);
                     }
-                    Log.d("page", "onPageSelected: "+position);
                     bottomNavigationView.getMenu().getItem(position).setChecked(true);
                     prevMenuItem = bottomNavigationView.getMenu().getItem(position);
                 }

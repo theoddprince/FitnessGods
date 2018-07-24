@@ -113,7 +113,7 @@ public class WorkoutsFragment  extends Fragment implements
                         null,
                         null);
             default:
-                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+                throw new RuntimeException(getResources().getString(R.string.loaderNotImplemented) + loaderId);
         }
     }
 

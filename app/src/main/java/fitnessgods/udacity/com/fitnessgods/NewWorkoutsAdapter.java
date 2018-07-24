@@ -98,8 +98,8 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
 
 
             android.support.v7.app.AlertDialog.Builder mBuilder = new android.support.v7.app.AlertDialog.Builder(mContext);
-            mBuilder.setTitle("Are you sure that you want to remove this workout ? ");
-            mBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            mBuilder.setTitle(mContext.getResources().getString(R.string.areYouSureToRemoveWorkout));
+            mBuilder.setPositiveButton(mContext.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -125,12 +125,12 @@ public class NewWorkoutsAdapter  extends RecyclerView.Adapter<NewWorkoutsAdapter
                     if(workoutName!= null && newWorkoutName.equals(workoutName))
                     {
                         ArrayList<Exercises> Exercises = new ArrayList<>() ;
-                        Workouts customWorkout = new Workouts("Select a new Custom Workout" , null ,Exercises );
+                        Workouts customWorkout = new Workouts(mContext.getResources().getString(R.string.selectWorkout) , null ,Exercises );
                         WorkoutsWidgetIntentService.startActionUpdateWorkoutWidgets(mContext,customWorkout);
                     }
                 }
             });
-            mBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            mBuilder.setNegativeButton(mContext.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //Don't do anything
