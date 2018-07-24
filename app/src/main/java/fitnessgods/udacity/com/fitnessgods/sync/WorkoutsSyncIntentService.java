@@ -2,7 +2,6 @@ package fitnessgods.udacity.com.fitnessgods.sync;
 
 import android.app.IntentService;
 import android.content.Intent;
-import java.io.IOException;
 
 public class WorkoutsSyncIntentService extends IntentService {
 

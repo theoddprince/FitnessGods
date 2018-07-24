@@ -1,8 +1,5 @@
 package fitnessgods.udacity.com.fitnessgods.data;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class Exercises implements Serializable {

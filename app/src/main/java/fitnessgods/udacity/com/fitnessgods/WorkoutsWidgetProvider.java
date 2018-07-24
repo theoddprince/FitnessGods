@@ -6,17 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.widget.RemoteViews;
-import android.widget.Toast;
-
-import fitnessgods.udacity.com.fitnessgods.data.Exercises;
 import fitnessgods.udacity.com.fitnessgods.data.Workouts;
 import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 

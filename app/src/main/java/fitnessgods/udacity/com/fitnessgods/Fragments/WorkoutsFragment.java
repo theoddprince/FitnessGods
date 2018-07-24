@@ -1,6 +1,5 @@
 package fitnessgods.udacity.com.fitnessgods.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,12 +13,10 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import fitnessgods.udacity.com.fitnessgods.ExercisesActivity;
 import fitnessgods.udacity.com.fitnessgods.R;
 import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;

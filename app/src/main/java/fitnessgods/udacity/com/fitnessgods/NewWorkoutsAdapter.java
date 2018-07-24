@@ -1,6 +1,5 @@
 package fitnessgods.udacity.com.fitnessgods;
 
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;

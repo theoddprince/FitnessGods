@@ -2,7 +2,6 @@ package fitnessgods.udacity.com.fitnessgods.Fragments;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,7 +17,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -28,14 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
 import fitnessgods.udacity.com.fitnessgods.CustomExercisesActivity;
-import fitnessgods.udacity.com.fitnessgods.ExercisesActivity;
 import fitnessgods.udacity.com.fitnessgods.NewWorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.R;
-import fitnessgods.udacity.com.fitnessgods.WorkoutsAdapter;
 import fitnessgods.udacity.com.fitnessgods.data.WorkoutsContract;
-import fitnessgods.udacity.com.fitnessgods.sync.WorkoutsWidgetIntentService;
 
 public class CustomListFragment  extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
